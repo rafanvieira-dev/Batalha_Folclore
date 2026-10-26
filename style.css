@@ -506,3 +506,39 @@ body:has(#game-screen:not(.hidden)) .hand-card.selected{transform:translateY(-8p
  body:has(#game-screen:not(.hidden)) .hand-header{padding:2px 0}
  body:has(#game-screen:not(.hidden)) #end-turn-button{min-width:145px;padding:10px 18px}
 }
+
+/* HUD essencial mantido na arena limpa */
+body:has(#game-screen:not(.hidden)) .battle-players{display:grid!important;grid-template-columns:1fr 54px 1fr;min-height:58px;padding:3px 8px;margin-bottom:2px;background:linear-gradient(90deg,#0b1023e8,#201338e8,#0b1023e8);border:1px solid #574a79;border-radius:8px}
+body:has(#game-screen:not(.hidden)) .battle-player{display:grid!important}
+body:has(#game-screen:not(.hidden)) .battle-player strong{display:block!important;font-size:12px}
+body:has(#game-screen:not(.hidden)) .battle-player small{display:block!important;font-size:7px}
+body:has(#game-screen:not(.hidden)) .player-avatar{display:grid!important;width:36px;height:36px;font-size:21px}
+body:has(#game-screen:not(.hidden)) .battle-core{display:flex!important}
+body:has(#game-screen:not(.hidden)) .core-orb{width:34px;height:34px;font-size:21px}
+body:has(#game-screen:not(.hidden)) .battle-core small{display:block!important;font-size:6px}
+body:has(#game-screen:not(.hidden)) .energy-row{display:flex!important;min-height:36px;margin:0;padding:5px 9px;gap:8px;background:#0b0b1bcc;border:1px solid #51426e;border-radius:7px}
+body:has(#game-screen:not(.hidden)) .energy-label{display:flex!important;align-items:center;gap:6px}
+body:has(#game-screen:not(.hidden)) .energy-label>span{display:grid!important}
+body:has(#game-screen:not(.hidden)) .energy-label strong{display:block!important;font-size:12px}
+body:has(#game-screen:not(.hidden)) .energy-label small{display:block!important;font-size:6px}
+body:has(#game-screen:not(.hidden)) .energy-pips{display:flex!important;gap:4px}
+body:has(#game-screen:not(.hidden)) .energy-pip{display:block!important;width:10px;height:10px}
+body:has(#game-screen:not(.hidden)) .turn-hint{display:none!important}
+body:has(#game-screen:not(.hidden)) .location .score-row{display:flex!important;align-items:center;justify-content:space-around;position:absolute;left:4px;right:4px;bottom:6px;margin:0;padding:3px 2px;background:#070918d9;border:1px solid #ffffff35;border-radius:6px;z-index:5}
+body:has(#game-screen:not(.hidden)) .location .score-side{display:flex!important;align-items:center;justify-content:center}
+body:has(#game-screen:not(.hidden)) .location .score-side strong{display:block!important;font-size:18px;color:#91efff;text-shadow:0 0 8px #5bdcff66}
+body:has(#game-screen:not(.hidden)) .location .score-side.bot strong{color:#ffacd0;text-shadow:0 0 8px #ff70a866}
+body:has(#game-screen:not(.hidden)) .location .score-vs{display:block!important;font-size:8px;color:#a7a2c6}
+body:has(#game-screen:not(.hidden)) .location .scenario-center{padding-bottom:35px}
+@media(max-width:560px){
+ body:has(#game-screen:not(.hidden)) .battle-players{grid-template-columns:1fr 42px 1fr;min-height:54px;padding:3px 5px}
+ body:has(#game-screen:not(.hidden)) .battle-player strong{font-size:10px}
+ body:has(#game-screen:not(.hidden)) .battle-player small{font-size:6px}
+ body:has(#game-screen:not(.hidden)) .player-avatar{width:32px;height:32px;font-size:18px}
+ body:has(#game-screen:not(.hidden)) .energy-row{min-height:32px;padding:4px 6px}
+ body:has(#game-screen:not(.hidden)) .energy-label small{font-size:5px}
+ body:has(#game-screen:not(.hidden)) .energy-pips{gap:3px}
+ body:has(#game-screen:not(.hidden)) .energy-pip{width:8px;height:8px}
+ body:has(#game-screen:not(.hidden)) .location .score-row{left:2px;right:2px;bottom:4px}
+ body:has(#game-screen:not(.hidden)) .location .score-side strong{font-size:14px}
+}
