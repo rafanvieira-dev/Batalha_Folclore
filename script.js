@@ -38,8 +38,8 @@ const LOCATIONS = [
 const $ = id => document.getElementById(id);
 let state = null, toastTimer;
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-const DEFAULT_DECK_IDS=CARDS.slice(0,8).map(c=>c.id);
-function loadSavedDeck(){try{const saved=JSON.parse(localStorage.getItem("batalhaFolcloreDeck")||"null");if(Array.isArray(saved)&&saved.length===8&&saved.every(id=>CARDS.some(c=>c.id===id))&&new Set(saved).size===8)return saved;}catch{}return [...DEFAULT_DECK_IDS];}
+const DECK_SIZE=12;\nconst DEFAULT_DECK_IDS=CARDS.slice(0,DECK_SIZE).map(c=>c.id);
+function loadSavedDeck(){try{const saved=JSON.parse(localStorage.getItem("batalhaFolcloreDeck")||"null");if(Array.isArray(saved)&&saved.length===DECK_SIZE&&saved.every(id=>CARDS.some(c=>c.id===id))&&new Set(saved).size===DECK_SIZE)return saved;}catch{}return [...DEFAULT_DECK_IDS];}
 let activeDeckIds=loadSavedDeck(),draftDeckIds=[...activeDeckIds];
 function makeDeck(ids=CARDS.map(c=>c.id)){return shuffle(ids.map(id=>CARDS.find(c=>c.id===id)).filter(Boolean).map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
 
@@ -68,17 +68,17 @@ function closeCardDetails(){const d=$("card-detail-dialog");if(d&&d.open)d.close
 function deckCardMarkup(card,selected){return `<button type="button" class="deck-card ${selected?"is-selected":""}" data-deck-card="${card.id}" aria-pressed="${selected}" style="--card:${card.color}"><span class="deck-card-art"><img src="${card.image}" alt="" loading="lazy" onerror="this.classList.add('image-missing')"><span class="deck-card-cost">${card.cost}</span><span class="deck-card-power">${card.attack+(card.defense||0)}</span></span><span class="deck-card-meta"><strong>${card.name}</strong><small>Custo ${card.cost} · Poder ${card.attack+(card.defense||0)}</small></span><span class="deck-card-toggle">${selected?"✓ No deck":"＋ Adicionar"}</span></button>`;}
 function renderDeckBuilder(){
  const selected=CARDS.filter(c=>draftDeckIds.includes(c.id));
- $("deck-count").textContent=draftDeckIds.length+" / 8 cartas";
- $("deck-status").textContent=draftDeckIds.length===8?(draftDeckIds.join("|")===activeDeckIds.join("|")?"Deck salvo.":"Pronto para salvar suas alterações."):("Selecione mais "+(8-draftDeckIds.length)+" carta(s).");
+ $("deck-count").textContent=draftDeckIds.length+" / "+DECK_SIZE+" cartas";
+ $("deck-status").textContent=draftDeckIds.length===DECK_SIZE?(draftDeckIds.join("|")===activeDeckIds.join("|")?"Deck salvo.":"Pronto para salvar suas alterações."):("Selecione mais "+(DECK_SIZE-draftDeckIds.length)+" carta(s).");
  $("deck-available-count").textContent=CARDS.length+" lendas";
  $("deck-selected-grid").innerHTML=selected.length?selected.map(c=>deckCardMarkup(c,true)).join(""):'<p class="deck-empty">Seu deck está vazio. Adicione cartas da coleção.</p>';
  $("deck-library-grid").innerHTML=CARDS.filter(c=>!draftDeckIds.includes(c.id)).map(c=>deckCardMarkup(c,false)).join("")||'<p class="deck-empty">Todas as lendas selecionadas.</p>';
- $("save-deck-button").disabled=draftDeckIds.length!==8||draftDeckIds.join("|")===activeDeckIds.join("|");
+ $("save-deck-button").disabled=draftDeckIds.length!==DECK_SIZE||draftDeckIds.join("|")===activeDeckIds.join("|");
  document.querySelectorAll("[data-deck-card]").forEach(el=>el.addEventListener("click",()=>{
   const id=el.dataset.deckCard;
   if(draftDeckIds.includes(id))draftDeckIds=draftDeckIds.filter(x=>x!==id);
-  else if(draftDeckIds.length<8)draftDeckIds.push(id);
-  else {toast("Seu deck já tem 8 cartas. Remova uma antes de adicionar outra.");return;}
+  else if(draftDeckIds.length<DECK_SIZE)draftDeckIds.push(id);
+  else {toast("Seu deck já tem 12 cartas. Remova uma antes de adicionar outra.");return;}
   renderDeckBuilder();
  }));
 }
@@ -263,7 +263,7 @@ $("start-button").addEventListener("click",startGame);
 $("collection-button").addEventListener("click",()=>{renderCollection();showScreen("collection");});
 $("deck-button").addEventListener("click",()=>{draftDeckIds=[...activeDeckIds];renderDeckBuilder();showScreen("deck");});
 $("deck-back").addEventListener("click",()=>showScreen("home"));
-$("save-deck-button").addEventListener("click",()=>{if(draftDeckIds.length!==8)return;activeDeckIds=[...draftDeckIds];try{localStorage.setItem("batalhaFolcloreDeck",JSON.stringify(activeDeckIds));}catch{}renderDeckBuilder();toast("Deck salvo! Ele será usado na próxima partida.");});
+$("save-deck-button").addEventListener("click",()=>{if(draftDeckIds.length!==DECK_SIZE)return;activeDeckIds=[...draftDeckIds];try{localStorage.setItem("batalhaFolcloreDeck",JSON.stringify(activeDeckIds));}catch{}renderDeckBuilder();toast("Deck salvo! Ele será usado na próxima partida.");});
 
 $("collection-back").addEventListener("click",()=>showScreen("home"));
 $("brand-home").addEventListener("click",e=>{e.preventDefault();showScreen("home");});
