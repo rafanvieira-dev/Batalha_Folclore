@@ -843,3 +843,34 @@ body:has(#game-screen:not(.hidden)) #locations .location .empty-slot{display:fle
 .deck-card-details-hint{display:block;padding:6px 7px;border-top:1px solid #ffffff12;background:#0b1220;color:#d8c6f6;font-size:10px;font-weight:800;text-align:center}
 .deck-card:hover .deck-card-details-hint,.deck-card:focus-visible .deck-card-details-hint{color:#f4d68c;background:#1c2131}
 @media(max-width:600px){.deck-card-details-hint{font-size:9px;padding:6px 2px}}
+
+
+/* Atualização cinematográfica: cartas entram, viram e revelam poder em sequência */
+#locations .location{transition:border-color .35s,box-shadow .35s,transform .35s;transform:translateZ(0)}
+#locations .location.lane-winning-you{border-color:#69d9d1;box-shadow:0 0 0 1px #69d9d155,0 0 24px #48e3c033,0 12px 28px #0008}
+#locations .location.lane-winning-bot{border-color:#e88ab9;box-shadow:0 0 0 1px #e88ab944,0 0 24px #f05a9b25,0 12px 28px #0008}
+#locations .location.lane-tied{border-color:#8b7a9f}
+#locations .location.lane-winning-you .scenario-center:before{animation:laneCaptureYou .65s ease-out}
+#locations .location.lane-winning-bot .scenario-center:before{animation:laneCaptureBot .65s ease-out}
+.board-card{transform-origin:50% 65%;backface-visibility:hidden;will-change:transform,opacity,filter}
+.board-card.queued{animation:cardQueuedIn .38s cubic-bezier(.18,.8,.22,1) both;border-style:dashed}
+.board-card.revealing{animation:cardFlipReveal .58s cubic-bezier(.2,.8,.2,1) both;z-index:2}
+.board-card.revealing .card-full-image{animation:cardArtFlash .58s ease-out both}
+.board-card.face-up:not(.revealing){border-style:solid}
+.player-hand .hand-card{transform-origin:50% 100%;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease}
+.player-hand .hand-card.selected{filter:brightness(1.14) saturate(1.12);animation:handSelectedPulse 1.35s ease-in-out infinite}
+.energy-pip.active{animation:energyIgnite .35s ease-out both}
+#battle-round-orb{transition:transform .25s,color .25s}
+#end-turn-button:not(:disabled){animation:endTurnBreath 2.2s ease-in-out infinite}
+.score-side strong{transition:color .25s,text-shadow .25s,transform .25s;display:inline-block}
+.result-panel:not(.hidden){animation:resultArrival .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes cardQueuedIn{0%{opacity:0;transform:translateY(22px) scale(.86) rotate(-5deg);filter:brightness(1.8)}70%{opacity:1;transform:translateY(-3px) scale(1.03) rotate(1deg)}100%{opacity:.88;transform:translateY(0) scale(1) rotate(0);filter:brightness(1)}}
+@keyframes cardFlipReveal{0%{opacity:.65;transform:perspective(600px) rotateY(0) scale(.92);filter:brightness(1)}45%{transform:perspective(600px) rotateY(90deg) scale(1.08);filter:brightness(1.8)}55%{transform:perspective(600px) rotateY(-70deg) scale(1.08);filter:brightness(1.65)}100%{opacity:1;transform:perspective(600px) rotateY(0) scale(1);filter:brightness(1)}}
+@keyframes cardArtFlash{0%,40%{filter:brightness(1)}52%{filter:brightness(2.1) saturate(1.5)}100%{filter:brightness(1)}}
+@keyframes laneCaptureYou{0%{opacity:.2;filter:brightness(1)}45%{opacity:1;filter:brightness(1.8)}100%{opacity:.55;filter:brightness(1)}}
+@keyframes laneCaptureBot{0%{opacity:.2;filter:brightness(1)}45%{opacity:1;filter:brightness(1.7) hue-rotate(-20deg)}100%{opacity:.55;filter:brightness(1)}}
+@keyframes handSelectedPulse{0%,100%{box-shadow:0 0 0 2px #ffe17b55,0 0 12px #ffc65b22}50%{box-shadow:0 0 0 3px #ffe17b99,0 0 23px #ffc65b66}}
+@keyframes energyIgnite{0%{transform:scale(.65);filter:brightness(2)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes endTurnBreath{0%,100%{box-shadow:0 0 0 #ffbd4800}50%{box-shadow:0 0 18px #ffbd4838}}
+@keyframes resultArrival{0%{opacity:0;transform:translateY(20px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){#locations .location,.player-hand .hand-card,#battle-round-orb{transition:none!important;animation:none!important}.board-card,.board-card .card-full-image,.result-panel{animation:none!important}}
