@@ -35,7 +35,7 @@ function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=M
 function makeDeck(){return shuffle(CARDS.map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
 function freshState(){
  const playerDeck=makeDeck(), botDeck=makeDeck();
- return {round:1,energy:1,hand:playerDeck.splice(0,3),deck:playerDeck,botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
+ return {round:1,energy:1,hand:playerDeck.splice(0,3),deck:playerDeck,botHand:botDeck.splice(0,3),botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
 }
 function basePower(card,lane){let n=card.attack+card.defense;if(card.id==="curupira"&&lane==="forest")n+=3;if(card.id==="boto"&&lane==="river")n+=3;if(card.id==="boitata"&&lane==="village")n+=2;return n;}
 function powerFor(entry){return Math.max(0,basePower(entry.card,entry.lane)+(entry.bonus||0));}
@@ -82,16 +82,15 @@ function botTurn(){
  let budget=state.round,plays=0;
  while(plays<4){
   const occupied=lane=>laneCards(lane,"bot").length;
-  const choices=state.botDeck.filter(c=>c.cost<=budget&&LOCATIONS.some(l=>occupied(l.id)<4));
+  const choices=state.botHand.filter(c=>c.cost<=budget&&LOCATIONS.some(l=>occupied(l.id)<4));
   if(!choices.length)break;
   const scores=currentScoresIncludingPending();
   const card=choices.sort((a,b)=>((b.attack+b.defense)/Math.max(1,b.cost))-((a.attack+a.defense)/Math.max(1,a.cost)))[0];
   const lanes=LOCATIONS.filter(l=>occupied(l.id)<4).sort((a,b)=>{
    const sa=scores.find(s=>s.id===a.id),sb=scores.find(s=>s.id===b.id);
-   const deficitA=sa.you-sa.bot,deficitB=sb.you-sb.bot;
-   return deficitB-deficitA;
+   return ((sa.you-sa.bot)-(sb.you-sb.bot));
   });
-  const lane=lanes[0];state.botDeck.splice(state.botDeck.findIndex(c=>c.instanceId===card.instanceId),1);
+  const lane=lanes[0];state.botHand.splice(state.botHand.findIndex(c=>c.instanceId===card.instanceId),1);
   state.pending.push({uid:state.uid++,card,lane:lane.id,side:"bot",revealed:false,bonus:0});budget-=card.cost;plays++;
   if(budget<=0)break;
  }
@@ -113,7 +112,7 @@ function resolvePending(){
    const target=[...state.played].filter(x=>x.lane===lane&&x.side===enemy).sort((a,b)=>powerFor(b)-powerFor(a))[0];
    if(target)target.bonus-=2;
   }
-  if(p.card.id==="vitoria"&&state.hand.length<7&&state.deck.length)state.hand.push(state.deck.shift());
+  if(p.card.id==="vitoria"&&p.side==="you"&&state.hand.length<7&&state.deck.length)state.hand.push(state.deck.shift());
   state.history.push(`${p.side==="you"?"Você":"Rival"} revelou ${p.card.name} em ${LOCATIONS.find(l=>l.id===lane).name}.`);
  }
 }
@@ -123,6 +122,7 @@ function endTurn(){
  if(state.round>=6){state.finished=true;state.notice="A sexta rodada terminou. Confira o resultado final!";renderGame();$("result-panel").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
  state.round++;state.energy=state.round;state.selected=null;
  if(state.deck.length&&state.hand.length<7)state.hand.push(state.deck.shift());
+ if(state.botDeck.length&&state.botHand.length<7)state.botHand.push(state.botDeck.shift());
  state.notice=`Rodada ${state.round}: energia renovada para ${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.`;
  renderGame();
 }
