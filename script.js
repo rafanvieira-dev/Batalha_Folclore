@@ -38,7 +38,8 @@ const LOCATIONS = [
 const $ = id => document.getElementById(id);
 let state = null, toastTimer;
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-const DECK_SIZE=12;\nconst DEFAULT_DECK_IDS=CARDS.slice(0,DECK_SIZE).map(c=>c.id);
+const DECK_SIZE=12;
+const DEFAULT_DECK_IDS=CARDS.slice(0,DECK_SIZE).map(c=>c.id);
 function loadSavedDeck(){try{const saved=JSON.parse(localStorage.getItem("batalhaFolcloreDeck")||"null");if(Array.isArray(saved)&&saved.length===DECK_SIZE&&saved.every(id=>CARDS.some(c=>c.id===id))&&new Set(saved).size===DECK_SIZE)return saved;}catch{}return [...DEFAULT_DECK_IDS];}
 let activeDeckIds=loadSavedDeck(),draftDeckIds=[...activeDeckIds];
 function makeDeck(ids=CARDS.map(c=>c.id)){return shuffle(ids.map(id=>CARDS.find(c=>c.id===id)).filter(Boolean).map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
