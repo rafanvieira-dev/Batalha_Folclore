@@ -121,3 +121,11 @@ footer{border-color:#6d6aa044}
 @keyframes scenarioGlow{from{transform:translateY(0) scale(1);filter:drop-shadow(0 0 8px var(--loc))}to{transform:translateY(-2px) scale(1.04);filter:drop-shadow(0 0 18px var(--loc))}}
 @media(min-width:1000px){.scenario-center{min-height:190px}.scenario-art{font-size:70px}.scenario-center h3{font-size:25px}.lane-card-row{min-height:82px}}
 @media(max-width:650px){.scenario-center{min-height:150px;padding:10px 8px}.scenario-art{font-size:48px}.scenario-center h3{font-size:22px}.scenario-center p{font-size:9px}.scenario-center .score-side strong{font-size:24px}}
+
+/* Ilustrações das cartas folclóricas */
+.hand-card-art{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--card),transparent 15%),transparent 70%),linear-gradient(150deg,#28294e,#101629)}
+.card-art-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:inherit}
+.hand-card-art.has-card-image .card-emoji{display:none}
+.hand-card-art .card-cost{position:absolute;z-index:2;top:7px;left:7px}
+.mini-art{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mini-art-image{width:100%;height:100%;max-height:64px;object-fit:cover;border-radius:4px}
