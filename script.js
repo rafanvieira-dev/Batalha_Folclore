@@ -10,7 +10,19 @@ const CARDS = [
 {id:"mapinguari",name:"Mapinguari",subtitle:"O gigante da mata",emoji:"🦣",cost:5,attack:7,defense:4,color:"#8b6d4d",ability:"Poder bruto para virar uma disputa."},
 {id:"corposeco",name:"Corpo-Seco",subtitle:"A maldição errante",emoji:"👻",cost:3,attack:3,defense:4,color:"#89939d",ability:"Ao revelar: +2 de poder para cada carta rival aqui (máximo +4)."},
 {id:"maedagua",name:"Mãe-d'Água",subtitle:"Senhora das fontes",emoji:"🫧",cost:4,attack:4,defense:5,color:"#4b9eb4",ability:"Ao revelar: +2 de poder se você controlar outro território."},
-{id:"negrinho",name:"Negrinho do Pastoreio",subtitle:"O guia das trilhas",emoji:"✨",cost:2,attack:2,defense:3,color:"#c69b5d",ability:"Ao revelar: +1 de poder para cada carta sua aqui (máximo +3)."}
+{id:"negrinho",name:"Negrinho do Pastoreio",subtitle:"O guia das trilhas",emoji:"✨",cost:2,attack:2,defense:3,color:"#c69b5d",ability:"Ao revelar: +1 de poder para cada carta sua aqui (máximo +3)."},
+{id:"boitata-guardiao",name:"Boiúna",subtitle:"A serpente dos rios",emoji:"🐉",cost:4,attack:5,defense:5,color:"#417e9a",ability:"Ao revelar: +2 de poder no Rio das Iaras."},
+{id:"matinta",name:"Matinta-Pereira",subtitle:"O assobio da noite",emoji:"🦉",cost:2,attack:3,defense:2,color:"#7764a7",ability:"Ao revelar: recebe +2 se o rival já tiver duas cartas aqui."},
+{id:"caipora",name:"Caipora",subtitle:"Protetora dos animais",emoji:"🏹",cost:2,attack:2,defense:4,color:"#4e9a62",ability:"Recebe +2 de poder na Floresta Encantada."},
+{id:"caboclo",name:"Caboclo-d'Água",subtitle:"O guardião do igarapé",emoji:"🛶",cost:3,attack:3,defense:5,color:"#438fa6",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
+{id:"mulaouro",name:"Mãe do Ouro",subtitle:"Luz que protege tesouros",emoji:"🌟",cost:3,attack:4,defense:3,color:"#c49a39",ability:"Ao revelar: +2 de poder se você estiver vencendo aqui."},
+{id:"onca",name:"Onça da Mão Torta",subtitle:"A fera encantada",emoji:"🐆",cost:4,attack:6,defense:3,color:"#bd783d",ability:"Ao revelar: +1 de poder por carta sua aqui (máximo +3)."},
+{id:"pisadeira",name:"Pisadeira",subtitle:"O terror da madrugada",emoji:"🌑",cost:3,attack:4,defense:3,color:"#8c526b",ability:"Ao revelar: reduz em 2 o poder de uma carta rival aqui."},
+{id:"sereia",name:"Sereia do Rio",subtitle:"O canto profundo",emoji:"🧜‍♀️",cost:4,attack:4,defense:5,color:"#4d8fc2",ability:"Ao revelar: +2 de poder se o rival tiver mais poder aqui."},
+{id:"sao-saci",name:"Romãozinho",subtitle:"O menino travesso",emoji:"🧒",cost:1,attack:2,defense:2,color:"#b66b49",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
+{id:"estrela",name:"Estrela do Mar",subtitle:"Encanto das águas",emoji:"⭐",cost:1,attack:1,defense:3,color:"#d28bba",ability:"Recebe +2 de poder no Rio das Iaras."},
+{id:"guardiao",name:"Anhangá",subtitle:"O espírito protetor",emoji:"🦌",cost:5,attack:6,defense:5,color:"#d1d1a2",ability:"Ao revelar: +2 de poder se você estiver perdendo em dois cenários."},
+{id:"tutu",name:"Tutu Marambá",subtitle:"O vulto das histórias",emoji:"🐗",cost:3,attack:4,defense:4,color:"#85634c",ability:"Ao revelar: +2 de poder se houver três ou mais cartas neste cenário."}
 ];
 const LOCATIONS = [
 {id:"forest",name:"Floresta Encantada",desc:"Curupira recebe +3 de poder aqui.",emoji:"🌲",color:"#75b879"},
@@ -20,7 +32,7 @@ const LOCATIONS = [
 const $ = id => document.getElementById(id);
 let state = null, toastTimer;
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function makeDeck(){return shuffle(Array.from({length:3},()=>CARDS.map(c=>({...c})) ).flat().map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
+function makeDeck(){return shuffle(CARDS.map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
 function freshState(){
  const playerDeck=makeDeck(), botDeck=makeDeck();
  return {round:1,energy:1,hand:playerDeck.splice(0,3),deck:playerDeck,botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
