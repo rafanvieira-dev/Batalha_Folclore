@@ -646,3 +646,91 @@ body:has(#game-screen:not(.hidden)) .final-lane-score .lane-win-you{color:#8fe6f
 body:has(#game-screen:not(.hidden)) .final-lane-score .lane-win-bot{color:#ff9ebc!important}
 body:has(#game-screen:not(.hidden)) .final-lane-score .lane-draw{color:#f1d58a!important}
 @media(prefers-reduced-motion:reduce){body:has(#game-screen:not(.hidden)) .board-card.revealing{animation:none!important}}
+
+
+/* Redesign responsivo: cartas ampliadas, detalhes legíveis e tabuleiro sem sobreposição */
+#card-detail-dialog{
+ width:min(92vw,620px)!important;max-width:620px!important;max-height:min(88vh,820px)!important;
+ padding:24px!important;overflow-y:auto!important;border:1px solid #d8bb73!important;
+ border-radius:22px!important;background:linear-gradient(145deg,#1c2638,#101722)!important;
+ box-shadow:0 30px 100px #000c!important;
+}
+#card-detail-dialog::backdrop{background:#03060bd9!important;backdrop-filter:blur(8px)!important}
+#card-detail-dialog .dialog-close{position:sticky!important;float:right!important;top:0!important;z-index:4!important;margin:-8px -8px 0 0!important}
+#card-detail-content{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1.2fr);gap:22px;align-items:center;clear:both}
+.card-detail-art{position:relative;min-width:0;aspect-ratio:2/3;max-height:440px;overflow:hidden;border:2px solid color-mix(in srgb,var(--card),#f1c66e 35%);border-radius:16px;background:radial-gradient(ellipse at 50% 20%,color-mix(in srgb,var(--card),transparent 48%),#0a101b 78%);box-shadow:0 15px 35px #0008,inset 0 0 0 4px #ffffff0b}
+.card-detail-art img{width:100%;height:100%;display:block;object-fit:cover}
+.card-detail-art img.image-missing{object-fit:contain;padding:18px}
+.card-detail-cost{position:absolute;top:12px;left:12px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#f1c66e;color:#161a20;font-size:22px;font-weight:900;border:2px solid #fff0c4;box-shadow:0 4px 12px #0008}
+.card-detail-info{min-width:0}
+.card-detail-info .eyebrow{font-size:9px;line-height:1.5;flex-wrap:wrap}
+.card-detail-info h2{font:900 clamp(27px,5vw,40px)/1 'Barlow Condensed',sans-serif;margin:10px 0 7px;overflow-wrap:anywhere}
+.card-detail-subtitle{color:#b8c3d4;font-size:13px;line-height:1.5;margin:0 0 18px}
+.card-detail-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.card-detail-stats span{display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid #ffffff18;border-radius:10px;background:#ffffff08}
+.card-detail-stats small{font-size:9px;letter-spacing:1px;color:#9eabc0}
+.card-detail-stats strong{font-size:22px;color:#f3d27d}
+.card-detail-ability{margin-top:14px;padding:12px;border-left:3px solid var(--gold,#f1c66e);border-radius:0 9px 9px 0;background:#ffffff08}
+.card-detail-ability strong{font-size:12px;color:#f1d48b}
+.card-detail-ability p{font-size:12px;line-height:1.6;color:#e0e6ef;margin:7px 0 0;overflow-wrap:anywhere}
+.card-detail-actions{display:flex;gap:10px;margin-top:20px}
+.card-detail-actions .button{flex:1;min-height:44px}
+.collection-grid{align-items:stretch}
+.collection-card{position:relative;display:flex;flex-direction:column;min-width:0;padding:0;text-align:left;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.collection-card:hover,.collection-card:focus-visible{transform:translateY(-5px);border-color:var(--card,#d8bb73);box-shadow:0 12px 28px #0006}
+.collection-card .card-full-image{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;min-height:0}
+.collection-card-caption{display:flex;flex-direction:column;gap:5px;padding:10px 11px;background:linear-gradient(180deg,#1b2430,#111923);min-width:0}
+.collection-card-caption strong{font:800 17px/1.1 'Barlow Condensed',sans-serif;overflow-wrap:anywhere}
+.collection-card-caption small{font-size:10px;color:#b5c1d0}
+.player-hand .hand-card{display:block;position:relative;min-width:0;aspect-ratio:2/3;min-height:0;height:auto;padding:0;border:1px solid color-mix(in srgb,var(--card),#ffffff 24%);background:#111827;overflow:hidden}
+.player-hand .hand-card .card-full-image{display:block;width:100%;height:100%;object-fit:cover}
+.player-hand .hand-card .card-select-glow{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 55%,#070b13aa);opacity:.55}
+.player-hand .hand-card.selected{outline:2px solid #ffe47b;outline-offset:2px;transform:translateY(-5px)}
+.player-hand .hand-card.dragging{opacity:.28;transform:scale(.94)}
+.card-drag-ghost{border:2px solid #ffe47b!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 18px 55px #000b,0 0 25px #ffe47b77!important;transform:rotate(-4deg) scale(1.04)!important;opacity:.96!important}
+.location.drop-target{outline:2px solid #8fe6ff!important;outline-offset:2px!important;background:linear-gradient(180deg,#173b55,#1a1937)!important}
+@media(max-width:600px){
+ #card-detail-dialog{padding:18px!important;width:94vw!important;max-height:90dvh!important}
+ #card-detail-content{grid-template-columns:minmax(100px,.72fr) minmax(0,1fr);gap:13px}
+ .card-detail-art{max-height:300px;border-radius:12px}
+ .card-detail-cost{width:30px;height:30px;top:7px;left:7px;font-size:17px}
+ .card-detail-info h2{font-size:clamp(22px,6vw,30px);margin:7px 0 5px}
+ .card-detail-subtitle{font-size:11px;margin-bottom:10px}
+ .card-detail-stats{gap:5px}
+ .card-detail-stats span{padding:7px}
+ .card-detail-stats small{font-size:7px;letter-spacing:.5px}
+ .card-detail-stats strong{font-size:18px}
+ .card-detail-ability{margin-top:8px;padding:9px}
+ .card-detail-ability p{font-size:11px;line-height:1.4}
+ .card-detail-actions{margin-top:13px;gap:7px}
+ .card-detail-actions .button{padding:11px 8px;font-size:11px}
+ .collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+ .collection-card-caption{padding:8px}
+ .collection-card-caption strong{font-size:16px}
+ .player-hand{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important}
+ .player-hand .hand-card{border-radius:6px}
+}
+@media(max-width:360px){
+ #card-detail-content{grid-template-columns:1fr;gap:12px}
+ .card-detail-art{width:min(55vw,220px);margin:0 auto;max-height:260px}
+ .card-detail-info h2{font-size:28px}
+ .card-detail-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .card-detail-stats span{padding:6px 4px}
+ .card-detail-stats small{font-size:6px}
+ .card-detail-stats strong{font-size:16px}
+ .card-detail-actions{flex-direction:column}
+}
+/* Não comprimir as informações: o tabuleiro rola verticalmente quando necessário. */
+body:has(#game-screen:not(.hidden)) #game-screen{gap:10px!important}
+body:has(#game-screen:not(.hidden)) .locations{flex:none!important;align-items:stretch!important}
+body:has(#game-screen:not(.hidden)) .location{min-height:clamp(260px,44vh,390px)!important;grid-template-rows:minmax(70px,1fr) 88px minmax(70px,1fr)!important}
+body:has(#game-screen:not(.hidden)) .location .lane-side{min-width:0!important}
+body:has(#game-screen:not(.hidden)) .location .lane-card-row{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
+body:has(#game-screen:not(.hidden)) .location .board-card{max-height:82px!important;min-width:0!important}
+body:has(#game-screen:not(.hidden)) .player-hand{flex:none!important;align-items:start!important}
+body:has(#game-screen:not(.hidden)) #result-panel{flex:none!important}
+@media(max-width:560px){
+ body:has(#game-screen:not(.hidden)) .location{min-height:clamp(240px,40vh,340px)!important;grid-template-rows:minmax(65px,1fr) 78px minmax(65px,1fr)!important}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center{height:78px!important;min-height:78px!important;max-height:78px!important}
+ body:has(#game-screen:not(.hidden)) .location .board-card{max-height:68px!important}
+}
