@@ -542,3 +542,21 @@ body:has(#game-screen:not(.hidden)) .location .scenario-center{padding-bottom:35
  body:has(#game-screen:not(.hidden)) .location .score-row{left:2px;right:2px;bottom:4px}
  body:has(#game-screen:not(.hidden)) .location .score-side strong{font-size:14px}
 }
+
+/* Correção final: alinhamento rígido das cartas e botão de turno sempre acessível */
+body:has(#game-screen:not(.hidden)) .locations{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:6px!important}
+body:has(#game-screen:not(.hidden)) .location{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(90px,1fr) 112px minmax(90px,1fr)!important;align-items:stretch!important;justify-content:stretch!important;gap:6px!important;min-width:0!important;height:auto!important;min-height:48vh!important;padding:6px 4px!important;overflow:hidden!important}
+body:has(#game-screen:not(.hidden)) .location .opponent-side{grid-row:1!important;grid-column:1!important;min-height:0!important;height:100%!important;overflow-y:auto!important;overflow-x:hidden!important}
+body:has(#game-screen:not(.hidden)) .location .scenario-center{grid-row:2!important;grid-column:1!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;width:100%!important;height:112px!important;min-height:112px!important;max-height:112px!important;align-self:stretch!important;margin:0!important;padding:0 2px 27px!important;z-index:4!important}
+body:has(#game-screen:not(.hidden)) .location .player-side{grid-row:3!important;grid-column:1!important;min-height:0!important;height:100%!important;overflow-y:auto!important;overflow-x:hidden!important}
+body:has(#game-screen:not(.hidden)) .location .lane-card-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:max-content!important;align-content:start!important;justify-content:start!important;gap:4px!important;width:100%!important;min-height:0!important}
+body:has(#game-screen:not(.hidden)) .location .board-card{position:relative!important;display:block!important;float:none!important;align-self:start!important;justify-self:stretch!important;width:100%!important;height:auto!important;aspect-ratio:2/3!important;max-height:100px!important;min-height:0!important;margin:0!important;transform:none!important;z-index:1!important}
+body:has(#game-screen:not(.hidden)) .hand-header{display:flex!important;position:relative!important;z-index:50!important;justify-content:flex-end!important;min-height:48px!important;margin:4px 0!important;overflow:visible!important}
+body:has(#game-screen:not(.hidden)) #end-turn-button{display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:51!important;pointer-events:auto!important;align-items:center!important;justify-content:center!important;min-height:44px!important}
+@media(max-width:560px){
+ body:has(#game-screen:not(.hidden)) .location{grid-template-rows:minmax(72px,1fr) 88px minmax(72px,1fr)!important;min-height:44vh!important;padding:4px 2px!important;gap:4px!important}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center{height:88px!important;min-height:88px!important;max-height:88px!important;padding-bottom:24px!important}
+ body:has(#game-screen:not(.hidden)) .location .board-card{max-height:78px!important}
+ body:has(#game-screen:not(.hidden)) .hand-header{min-height:46px!important}
+ body:has(#game-screen:not(.hidden)) #end-turn-button{min-height:42px!important;min-width:145px!important}
+}
