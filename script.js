@@ -51,7 +51,34 @@ function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("sho
 function showScreen(name){$("home-screen").classList.toggle("hidden",name!=="home");$("collection-screen").classList.toggle("hidden",name!=="collection");$("game-screen").classList.toggle("hidden",name!=="game");window.scrollTo({top:0,behavior:"smooth"});}
 function cardArt(card){return card.image?'<img class="card-full-image" src="'+card.image+'" alt="'+card.name+'" loading="lazy" onerror="this.classList.add(\'image-missing\')">':'<span class="card-fallback">'+card.name+'</span>';}
 function cardMarkup(card,classes=""){return `<button type="button" class="hand-card ${classes}" style="--card:${card.color}" data-card="${card.instanceId}" aria-label="Selecionar ${card.name}; custo ${card.cost}; poder ${card.attack}"><img class="card-full-image" src="${card.image}" alt="${card.name}" loading="lazy" onerror="this.classList.add('image-missing')"><span class="card-select-glow" aria-hidden="true"></span></button>`;}
-function renderCollection(){$("collection-grid").innerHTML=CARDS.map(c=>`<button type="button" class="collection-card" style="--card:${c.color}" data-collection-card="${c.id}" aria-label="${c.name}, custo ${c.cost}, poder ${c.attack}"><img class="card-full-image" src="${c.image}" alt="${c.name}" loading="lazy" onerror="this.classList.add('image-missing')"></button>`).join("");}
+let detailCardContext="collection", detailCardInstance=null, dragTimer=null, activeDrag=null, suppressCardClick=false;
+function showCardDetails(card,context="collection"){
+ detailCardContext=context;detailCardInstance=card.instanceId||null;
+ const dialog=$("card-detail-dialog"),content=$("card-detail-content");
+ if(!dialog||!content)return;
+ content.innerHTML=`<div class="card-detail-art" style="--card:${card.color}"><img src="${card.image||""}" alt="${card.name}" onerror="this.classList.add('image-missing')"><span class="card-detail-cost">${card.cost}</span></div><div class="card-detail-info"><div class="eyebrow">${context==="collection"?"BESTIÁRIO DO FOLCLORE":"CARTA DA SUA MÃO"}</div><h2>${card.name}</h2><p class="card-detail-subtitle">${card.subtitle||"Uma lenda brasileira"}</p><div class="card-detail-stats"><span><small>CUSTO</small><strong>${card.cost}</strong></span><span><small>ATAQUE</small><strong>${card.attack}</strong></span><span><small>DEFESA</small><strong>${card.defense||0}</strong></span><span><small>PODER BASE</small><strong>${(card.attack||0)+(card.defense||0)}</strong></span></div><div class="card-detail-ability"><strong>Habilidade</strong><p>${card.ability||"Nenhuma habilidade especial."}</p></div></div>`;
+ const choose=$("detail-select-card");choose.classList.toggle("hidden",context!=="hand");choose.textContent="Selecionar carta";
+ if(!dialog.open)dialog.showModal();
+}
+function closeCardDetails(){const d=$("card-detail-dialog");if(d&&d.open)d.close();}
+function renderCollection(){$("collection-grid").innerHTML=CARDS.map(c=>`<button type="button" class="collection-card" style="--card:${c.color}" data-collection-card="${c.id}" aria-label="Ver detalhes de ${c.name}"><img class="card-full-image" src="${c.image}" alt="${c.name}" loading="lazy" onerror="this.classList.add('image-missing')"><span class="collection-card-caption"><strong>${c.name}</strong><small>Custo ${c.cost} · Poder ${c.attack+(c.defense||0)}</small></span></button>`).join("");
+ $("collection-grid").querySelectorAll("[data-collection-card]").forEach(el=>el.addEventListener("click",()=>{const card=CARDS.find(c=>c.id===el.dataset.collectionCard);if(card)showCardDetails(card,"collection");}));
+}
+function attachHandInteractions(){
+ $("player-hand").querySelectorAll("[data-card]").forEach(el=>{
+  el.addEventListener("click",()=>{if(suppressCardClick){suppressCardClick=false;return;}const card=state&&state.hand.find(c=>c.instanceId===el.dataset.card);if(card)showCardDetails(card,"hand");});
+  el.addEventListener("pointerdown",e=>{
+   if(e.button!==undefined&&e.button!==0)return;
+   const id=el.dataset.card;
+   clearTimeout(dragTimer);
+   dragTimer=setTimeout(()=>{if(!state||state.finished||state.resolving)return;const card=state.hand.find(c=>c.instanceId===id);if(!card)return;activeDrag={id,card,ghost:el.cloneNode(true),lane:null};activeDrag.ghost.classList.add("card-drag-ghost");activeDrag.ghost.style.width="100px";activeDrag.ghost.style.height="145px";activeDrag.ghost.style.position="fixed";activeDrag.ghost.style.zIndex="9999";activeDrag.ghost.style.pointerEvents="none";document.body.appendChild(activeDrag.ghost);el.classList.add("dragging");suppressCardClick=true;moveDragGhost(e.clientX,e.clientY);},430);
+  });
+  el.addEventListener("pointermove",e=>{if(activeDrag&&activeDrag.id===el.dataset.card){e.preventDefault();moveDragGhost(e.clientX,e.clientY);}});
+  const release=e=>{clearTimeout(dragTimer);if(!activeDrag||activeDrag.id!==el.dataset.card)return;const lane=activeDrag.lane;activeDrag.ghost.remove();activeDrag=null;el.classList.remove("dragging");document.querySelectorAll(".location.drop-target").forEach(n=>n.classList.remove("drop-target"));if(lane){const card=state&&state.hand.find(c=>c.instanceId===el.dataset.card);if(card){state.selected=card.instanceId;playCard(lane);}}setTimeout(()=>{suppressCardClick=false;},80);};
+  el.addEventListener("pointerup",release);el.addEventListener("pointercancel",release);
+ });
+}
+function moveDragGhost(x,y){if(!activeDrag)return;activeDrag.ghost.style.left=(x-50)+"px";activeDrag.ghost.style.top=(y-72)+"px";activeDrag.lane=null;document.querySelectorAll(".location.drop-target").forEach(n=>n.classList.remove("drop-target"));const target=document.elementFromPoint(x,y)?.closest("[data-lane]");if(target){activeDrag.lane=target.dataset.lane;target.classList.add("drop-target");}}
 function renderGame(){
  $("round-number").textContent=state.round;$("battle-round-orb").textContent=state.round;$("energy-value").textContent=`${state.energy} / ${state.round}`;$("hand-count").textContent=state.hand.length;
  $("energy-pips").innerHTML=Array.from({length:6},(_,i)=>`<span class="energy-pip ${i<state.energy?"active":""}"></span>`).join("");$("turn-hint").textContent=state.notice;
@@ -63,7 +90,7 @@ function renderGame(){
   return `<article class="location" style="--loc:${loc.color}" data-lane="${loc.id}" aria-label="Território"><div class="lane-side opponent-side"><div class="lane-card-row">${sideCards("bot")}</div></div><div class="scenario-center"><div class="scenario-art" aria-hidden="true">${loc.emoji}</div><div class="score-row" aria-label="Pontuação do território"><div class="score-side bot"><strong>${s.bot}</strong></div><span class="score-vs">◆</span><div class="score-side"><strong>${s.you}</strong></div></div></div><div class="lane-side player-side"><div class="lane-card-row">${sideCards("you")}</div></div></article>`;
  }).join("");
  $("player-hand").innerHTML=state.hand.map(c=>cardMarkup(c,`${state.selected===c.instanceId?"selected":""} ${c.cost>state.energy?"unaffordable":""}`)).join("");
- $("player-hand").querySelectorAll("[data-card]").forEach(el=>el.addEventListener("click",()=>selectCard(el.dataset.card)));
+ attachHandInteractions();
  $("locations").querySelectorAll("[data-lane]").forEach(el=>el.addEventListener("click",()=>playCard(el.dataset.lane)));
  $("locations").querySelectorAll(".board-card.revealing").forEach(el=>el.addEventListener("animationend",()=>{el.classList.remove("revealing");const card=state.played.find(p=>String(p.uid)===el.dataset.uid);if(card)card.revealing=false;},{once:true}));
  $("end-turn-button").disabled=state.finished;
@@ -219,4 +246,8 @@ $("end-turn-button").addEventListener("click",endTurn);
 $("help-button").addEventListener("click",()=>$("help-dialog").showModal());
 $("close-help").addEventListener("click",()=>$("help-dialog").close());
 $("got-it").addEventListener("click",()=>{$("help-dialog").close();startGame();});
+$("close-card-detail").addEventListener("click",closeCardDetails);
+$("close-card-detail-action").addEventListener("click",closeCardDetails);
+$("detail-select-card").addEventListener("click",()=>{if(detailCardContext==="hand"&&state&&detailCardInstance){selectCard(detailCardInstance);}closeCardDetails();});
+
 renderCollection();
