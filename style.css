@@ -360,3 +360,63 @@ body:has(#game-screen:not(.hidden)) .result-panel{margin-top:4px;padding:10px}
  body:has(#game-screen:not(.hidden)) .player-hand{gap:4px}
  body:has(#game-screen:not(.hidden)) .hand-header p{display:none}
 }
+
+
+/* OPÇÃO 1 — arena dinâmica: cenário em CSS + cartas e placares reais do jogo */
+body:has(#game-screen:not(.hidden)){background:#050712}
+body:has(#game-screen:not(.hidden)):before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradient(ellipse at 50% 8%,#30226c 0,transparent 34%),radial-gradient(ellipse at 12% 58%,#0d4560 0,transparent 36%),radial-gradient(ellipse at 88% 74%,#541e43 0,transparent 35%),linear-gradient(180deg,#060713 0%,#10152d 52%,#060713 100%)}
+body:has(#game-screen:not(.hidden)) .game-screen{gap:7px;padding-top:7px}
+body:has(#game-screen:not(.hidden)) .locations{gap:6px}
+body:has(#game-screen:not(.hidden)) .location{position:relative;isolation:isolate;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;display:flex;flex-direction:column;min-height:0}
+body:has(#game-screen:not(.hidden)) .location:before{display:none}
+body:has(#game-screen:not(.hidden)) .location .opponent-side,
+body:has(#game-screen:not(.hidden)) .location .player-side{position:relative;z-index:2;flex:1 1 0;min-height:100px;padding:6px 3px;background:linear-gradient(180deg,#0b1024a8,#070a18b5);border:0}
+body:has(#game-screen:not(.hidden)) .location .opponent-side{border-bottom:1px solid #a9a3ff33}
+body:has(#game-screen:not(.hidden)) .location .player-side{border-top:1px solid #8dd9ff33}
+body:has(#game-screen:not(.hidden)) .location .lane-side-label{font-size:7px;text-shadow:0 1px 4px #000}
+body:has(#game-screen:not(.hidden)) .location .lane-card-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;min-height:0;align-content:center}
+body:has(#game-screen:not(.hidden)) .location .board-card{position:relative;aspect-ratio:2/3;width:100%;height:auto;min-height:0!important;border:1px solid #86caff;border-radius:5px;box-shadow:0 0 8px #43bfff5c,0 4px 9px #000b;overflow:hidden}
+body:has(#game-screen:not(.hidden)) .location .board-card.bot{border-color:#ff8ab9;box-shadow:0 0 8px #ff45985c,0 4px 9px #000b}
+body:has(#game-screen:not(.hidden)) .location .board-card .card-full-image{object-fit:cover}
+body:has(#game-screen:not(.hidden)) .location .scenario-center{z-index:3;isolation:isolate;overflow:hidden;min-height:175px;width:100%;padding:8px 5px;border:2px solid #d9c18b;border-radius:12px;box-shadow:0 0 0 3px #35264e,0 0 18px #c48cff44,0 7px 16px #000c;background:#11172a;clip-path:polygon(0 9%,12% 0,88% 0,100% 9%,100% 91%,88% 100%,12% 100%,0 91%)}
+body:has(#game-screen:not(.hidden)) .location .scenario-center:before{inset:0;z-index:-2;opacity:1;background:linear-gradient(180deg,#06101b2b,#080b1ed9),radial-gradient(ellipse at 50% 25%,var(--loc),transparent 78%)}
+body:has(#game-screen:not(.hidden)) .location .scenario-center:after{content:"";position:absolute;z-index:-1;inset:0;opacity:.8;pointer-events:none;background:linear-gradient(180deg,transparent 0%,#05081722 34%,#050817eb 100%),radial-gradient(ellipse at 50% 0%,#ffffff26,transparent 60%)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(1) .scenario-center{--loc:#4ab77d;background:linear-gradient(180deg,#163d35,#10241f)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(1) .scenario-center:before{background:linear-gradient(180deg,#10291b22,#05150fe8),radial-gradient(ellipse at 50% 25%,#55d87c,transparent 80%),repeating-linear-gradient(125deg,transparent 0 20px,#b7ffab0b 21px 22px)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(2) .scenario-center{--loc:#5ebce9;background:linear-gradient(180deg,#153c5c,#101d3d)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(2) .scenario-center:before{background:linear-gradient(180deg,#173e5d30,#061024ec),radial-gradient(ellipse at 50% 32%,#5cc9ef,transparent 72%),repeating-linear-gradient(0deg,transparent 0 13px,#a2f1ff0c 14px 16px)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(3) .scenario-center{--loc:#d68c62;background:linear-gradient(180deg,#432b45,#1d1a35)}
+body:has(#game-screen:not(.hidden)) .location:nth-child(3) .scenario-center:before{background:linear-gradient(180deg,#3c24331c,#0a0d20ed),radial-gradient(ellipse at 50% 32%,#e9a55b,transparent 70%),repeating-linear-gradient(135deg,transparent 0 23px,#ffdca30b 24px 25px)}
+body:has(#game-screen:not(.hidden)) .location .scenario-art{display:grid;place-items:center;width:54px;height:43px;font-size:30px;margin:0 auto 3px;border-radius:50%;background:#060a1788;border:1px solid #ffffff44;box-shadow:0 0 15px color-mix(in srgb,var(--loc),transparent 35%)}
+body:has(#game-screen:not(.hidden)) .location .scenario-kicker{font-size:6px;letter-spacing:1.5px}
+body:has(#game-screen:not(.hidden)) .location .scenario-center h3{font-size:clamp(12px,1.35vw,19px);line-height:1.05;margin:4px 0;color:#fff;text-shadow:0 2px 5px #000}
+body:has(#game-screen:not(.hidden)) .location .scenario-center p{font-size:7px;line-height:1.2;color:#f0edff;margin:0 auto 5px;max-width:180px}
+body:has(#game-screen:not(.hidden)) .location .scenario-center .score-row{width:100%;max-width:190px;margin:auto;background:#070918e8;border:1px solid #ffffff38;border-radius:6px;padding:4px}
+body:has(#game-screen:not(.hidden)) .location .scenario-center .score-side strong{font-size:23px;color:#9ef5ff;text-shadow:0 0 10px #5bdcff66}
+body:has(#game-screen:not(.hidden)) .location .scenario-center .score-side.bot strong{color:#ffb3d0;text-shadow:0 0 10px #ff70a866}
+body:has(#game-screen:not(.hidden)) .location .play-here{border:1px solid #8e75bd;background:linear-gradient(100deg,#16152e,#302044);box-shadow:0 0 8px #8c5cff22;color:#fff0c3}
+body:has(#game-screen:not(.hidden)) .battle-players{min-height:68px;border:0;border-radius:0;background:linear-gradient(90deg,#0b1023e8,#201338e8,#0b1023e8);box-shadow:0 4px 15px #0008}
+body:has(#game-screen:not(.hidden)) .player-avatar{clip-path:polygon(15% 0,85% 0,100% 25%,100% 75%,85% 100%,15% 100%,0 75%,0 25%);border-radius:0}
+body:has(#game-screen:not(.hidden)) .hand-header{border:0;border-bottom:1px solid #8c78ba66;background:linear-gradient(90deg,#0a1023,#211632,#0a1023);border-radius:3px}
+body:has(#game-screen:not(.hidden)) .player-hand{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;max-width:790px}
+body:has(#game-screen:not(.hidden)) .hand-card{border:1px solid #9b83d0;box-shadow:0 5px 14px #000b}
+body:has(#game-screen:not(.hidden)) .hand-card.selected{border:2px solid #ffe47b;box-shadow:0 0 14px #ffe47b88}
+@media(min-width:700px){
+ body:has(#game-screen:not(.hidden)) .game-screen{min-height:calc(100vh - 10px)}
+ body:has(#game-screen:not(.hidden)) .locations{min-height:0}
+ body:has(#game-screen:not(.hidden)) .location .opponent-side,body:has(#game-screen:not(.hidden)) .location .player-side{min-height:130px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center{min-height:195px}
+}
+@media(max-width:560px){
+ body:has(#game-screen:not(.hidden)) .locations{gap:3px}
+ body:has(#game-screen:not(.hidden)) .location .opponent-side,body:has(#game-screen:not(.hidden)) .location .player-side{min-height:75px;padding:4px 2px}
+ body:has(#game-screen:not(.hidden)) .location .lane-side-label{font-size:5px;letter-spacing:0}
+ body:has(#game-screen:not(.hidden)) .location .lane-card-row{gap:2px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center{min-height:130px;padding:5px 3px;border-radius:8px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-art{width:36px;height:30px;font-size:21px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center h3{font-size:10px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center p{font-size:6px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .score-side strong{font-size:16px}
+ body:has(#game-screen:not(.hidden)) .location .play-here{font-size:6px;padding:4px 1px}
+ body:has(#game-screen:not(.hidden)) .player-hand{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+}
