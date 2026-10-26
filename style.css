@@ -420,3 +420,40 @@ body:has(#game-screen:not(.hidden)) .hand-card.selected{border:2px solid #ffe47b
  body:has(#game-screen:not(.hidden)) .location .play-here{font-size:6px;padding:4px 1px}
  body:has(#game-screen:not(.hidden)) .player-hand{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
 }
+
+/* Ajuste de arena mobile baseado na captura real */
+body:has(#game-screen:not(.hidden)) .locations{align-items:stretch;min-height:0}
+body:has(#game-screen:not(.hidden)) .location{display:flex;flex-direction:column;justify-content:flex-start;min-height:0;height:auto;overflow:hidden}
+body:has(#game-screen:not(.hidden)) .location .opponent-side,body:has(#game-screen:not(.hidden)) .location .player-side{flex:0 0 auto;min-height:0!important;padding:5px 4px;gap:4px}
+body:has(#game-screen:not(.hidden)) .location .lane-side-label{min-height:17px;line-height:1.1}
+body:has(#game-screen:not(.hidden)) .location .lane-card-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;min-height:0!important;flex:0 0 auto;align-content:start}
+body:has(#game-screen:not(.hidden)) .location .board-card{width:100%;height:auto;aspect-ratio:2/3;min-height:0!important;max-height:none}
+body:has(#game-screen:not(.hidden)) .location .empty-slot{min-height:36px;height:36px;font-size:7px}
+body:has(#game-screen:not(.hidden)) .location .scenario-center{flex:0 0 auto;min-height:145px}
+body:has(#game-screen:not(.hidden)) .location .player-side{margin-top:0}
+body:has(#game-screen:not(.hidden)) .location .play-here{margin-top:3px}
+body:has(#game-screen:not(.hidden)) .player-hand{align-items:start}
+body:has(#game-screen:not(.hidden)) .hand-card{align-self:start}
+@media(max-width:560px){
+ body:has(#game-screen:not(.hidden)) .game-screen{gap:5px;padding-top:5px}
+ body:has(#game-screen:not(.hidden)) .battle-players{min-height:62px;padding:3px 5px}
+ body:has(#game-screen:not(.hidden)) .energy-row{min-height:0;padding:7px 8px;gap:7px}
+ body:has(#game-screen:not(.hidden)) .turn-hint{max-width:100%;font-size:8px}
+ body:has(#game-screen:not(.hidden)) .locations{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+ body:has(#game-screen:not(.hidden)) .location .opponent-side,body:has(#game-screen:not(.hidden)) .location .player-side{padding:4px 2px;gap:3px}
+ body:has(#game-screen:not(.hidden)) .location .lane-side-label{min-height:14px;font-size:5px}
+ body:has(#game-screen:not(.hidden)) .location .lane-card-row{gap:2px}
+ body:has(#game-screen:not(.hidden)) .location .empty-slot{height:28px;min-height:28px;font-size:6px;letter-spacing:0}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center{min-height:122px;padding:5px 2px;border-width:1px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .scenario-art{width:30px;height:26px;font-size:19px;margin-bottom:2px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .scenario-kicker{font-size:5px;letter-spacing:.6px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center h3{font-size:10px;overflow-wrap:anywhere}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center p{font-size:6px;line-height:1.15;margin-bottom:3px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .score-row{padding:3px 1px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .score-side small{font-size:5px;letter-spacing:.3px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .score-side strong{font-size:15px}
+ body:has(#game-screen:not(.hidden)) .location .scenario-center .score-vs{font-size:6px}
+ body:has(#game-screen:not(.hidden)) .location .play-here{padding:4px 0;font-size:5.5px;letter-spacing:0;white-space:normal;line-height:1.1}
+ body:has(#game-screen:not(.hidden)) .hand-header{margin-top:2px}
+ body:has(#game-screen:not(.hidden)) .player-hand{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+}
