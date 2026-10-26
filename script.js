@@ -145,16 +145,44 @@ function resolvePending(){
   state.history.push(`${p.side==="you"?"Você":"Rival"} revelou ${p.card.name} em ${LOCATIONS.find(l=>l.id===lane).name}.`);
  }
 }
+function finishGame(){
+ if(!state)return;
+ state.pending.forEach(p=>{p.revealed=true;p.revealing=false;state.played.push(p);});
+ state.pending=[];
+ state.finished=true;state.resolving=false;state.selected=null;
+ state.notice="Fim da sexta rodada. Resultado final:";
+ const totals=LOCATIONS.map(location=>{
+  const you=state.played.filter(p=>p.lane===location.id&&p.side==="you").reduce((n,p)=>n+powerFor(p),0);
+  const bot=state.played.filter(p=>p.lane===location.id&&p.side==="bot").reduce((n,p)=>n+powerFor(p),0);
+  return {location,you,bot};
+ });
+ const you=totals.filter(s=>s.you>s.bot).length,bot=totals.filter(s=>s.bot>s.you).length,ties=totals.filter(s=>s.you===s.bot).length;
+ const headline=you>bot?"VITÓRIA":you===bot?"EMPATE":"DERROTA";
+ const message=you>bot?"Parabéns! Você venceu em mais territórios.":you===bot?"A partida terminou empatada.":"O rival venceu em mais territórios. Tente novamente!";
+ const breakdown=totals.map(s=>'<div class="final-lane-score"><span>'+s.location.emoji+' '+s.location.name+'</span><strong class="'+(s.you>s.bot?"lane-win-you":s.bot>s.you?"lane-win-bot":"lane-draw")+'">'+s.you+' × '+s.bot+'</strong><small>'+(s.you>s.bot?"Você venceu":s.bot>s.you?"Rival venceu":"Empate")+'</small></div>').join("");
+ const panel=$("result-panel");
+ panel.classList.remove("hidden");
+ panel.innerHTML='<div class="final-result-copy"><div class="eyebrow">FIM DE JOGO · 6 RODADAS</div><h3 class="'+(you>bot?"result-win":you===bot?"result-draw":"result-loss")+'">'+headline+'</h3><p>'+message+'</p><p class="result-score">Territórios vencidos: você <strong>'+you+'</strong> · rival <strong>'+bot+'</strong> · empatados <strong>'+ties+'</strong>.</p><div class="final-lane-breakdown">'+breakdown+'</div></div><div class="result-actions"><button class="button gold" id="play-again">Jogar novamente ↻</button><button class="button quiet" id="exit-game">Sair para o início ⌂</button></div>';
+ $("play-again").addEventListener("click",startGame);
+ $("exit-game").addEventListener("click",()=>{state=null;showScreen("home");});
+ $("end-turn-button").disabled=true;
+ panel.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
 async function endTurn(){
- if(state.finished||state.resolving)return;
+ if(!state||state.finished||state.resolving)return;
  state.resolving=true;$("end-turn-button").disabled=true;
- botTurn();
- state.notice="As lendas estão revelando suas cartas...";
- renderGame();
- await new Promise(resolve=>setTimeout(resolve,650));
- resolvePending();
+ try{
+  botTurn();
+  state.notice="As lendas estão revelando suas cartas...";
+  renderGame();
+  await new Promise(resolve=>setTimeout(resolve,650));
+  resolvePending();
+ }catch(error){
+  console.error("Erro ao resolver a rodada:",error);
+  state.notice="As cartas foram contabilizadas para encerrar a partida.";
+ }
  state.resolving=false;
- if(state.round>=6){state.finished=true;state.notice="A sexta rodada terminou. Confira a pontuação dos três territórios!";renderGame();$("result-panel").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
+ if(state.round>=6){finishGame();renderGame();$("result-panel").classList.remove("hidden");return;}
  state.round++;state.energy=state.round;state.selected=null;
  if(state.deck.length&&state.hand.length<7)state.hand.push(state.deck.shift());
  if(state.botDeck.length&&state.botHand.length<7)state.botHand.push(state.botDeck.shift());
