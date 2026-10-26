@@ -69,6 +69,7 @@ function attachHandInteractions(){
   el.addEventListener("click",()=>{if(suppressCardClick){suppressCardClick=false;return;}const card=state&&state.hand.find(c=>c.instanceId===el.dataset.card);if(card)showCardDetails(card,"hand");});
   el.addEventListener("pointerdown",e=>{
    if(e.button!==undefined&&e.button!==0)return;
+   try{el.setPointerCapture(e.pointerId);}catch{}
    const id=el.dataset.card;
    clearTimeout(dragTimer);
    dragTimer=setTimeout(()=>{if(!state||state.finished||state.resolving)return;const card=state.hand.find(c=>c.instanceId===id);if(!card)return;activeDrag={id,card,ghost:el.cloneNode(true),lane:null};activeDrag.ghost.classList.add("card-drag-ghost");activeDrag.ghost.style.width="100px";activeDrag.ghost.style.height="145px";activeDrag.ghost.style.position="fixed";activeDrag.ghost.style.zIndex="9999";activeDrag.ghost.style.pointerEvents="none";document.body.appendChild(activeDrag.ghost);el.classList.add("dragging");suppressCardClick=true;moveDragGhost(e.clientX,e.clientY);},430);
