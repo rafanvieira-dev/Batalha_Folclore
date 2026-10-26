@@ -825,3 +825,17 @@ body:has(#game-screen:not(.hidden)) #locations .location .empty-slot{display:fle
 @media(max-width:1000px){.deck-layout{grid-template-columns:minmax(0,1fr)}.deck-selected-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.deck-library-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media(max-width:650px){.deck-screen{padding-top:26px}.deck-toolbar{padding:12px;align-items:flex-start}.deck-toolbar strong{font-size:20px}.deck-toolbar span{font-size:10px;line-height:1.4}.deck-toolbar .button{padding:12px 10px;font-size:10px;white-space:nowrap}.deck-layout{gap:12px}.deck-selected-panel,.deck-library-panel{padding:10px}.deck-selected-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.deck-library-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.deck-card-meta{padding:7px 6px 5px}.deck-card-meta strong{font-size:14px}.deck-card-meta small{font-size:8px}.deck-card-toggle{font-size:9px;padding:6px 3px}.deck-panel-title h3{font-size:21px}.deck-panel-title>span{font-size:9px;padding:4px 6px}}
 @media(max-width:390px){.deck-selected-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.deck-library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.deck-toolbar{flex-direction:column}.deck-toolbar .button{width:100%}}
+
+
+/* Seletor de decks: sempre no topo do editor */
+.deck-manager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0 10px;padding:10px 12px;border:1px solid #4a3e60;border-radius:14px;background:linear-gradient(110deg,#211b31,#151b29)}
+.deck-tabs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.deck-tab{min-width:88px;padding:11px 16px;border:1px solid #544665;border-radius:9px;background:#171827;color:#c4bdd5;font:800 13px 'DM Sans',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.deck-tab:hover{border-color:#bba1e9;color:#fff}
+.deck-tab.active{border-color:#f1c66e;background:linear-gradient(145deg,#f3d68f,#c99b4e);color:#191723;box-shadow:0 4px 14px #e0b65d22}
+.deck-add-button{white-space:nowrap;display:flex;align-items:center;gap:9px}
+.deck-add-button span{padding:3px 6px;border-radius:6px;background:#ffffff12;font-size:10px}
+.deck-add-button:disabled{opacity:.4;cursor:not-allowed}
+.deck-card-art img{object-fit:contain!important}
+.deck-card-cost,.deck-card-power{display:none!important}
+@media(max-width:600px){.deck-manager{align-items:stretch;flex-direction:column;padding:9px}.deck-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.deck-tab{min-width:0;padding:10px 4px;font-size:11px}.deck-add-button{justify-content:center}.deck-toolbar{margin-top:10px}}
