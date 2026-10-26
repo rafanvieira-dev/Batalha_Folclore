@@ -136,8 +136,8 @@ function renderGame(){
  $("locations").innerHTML=LOCATIONS.map((loc,i)=>{
   const s=totals.find(t=>t.location.id===loc.id);
   const youCount=laneCards(loc.id,"you").length,botCount=laneCards(loc.id,"bot").length;
-  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>{const face=p.revealed;return `<div class="board-card ${side==="bot"?"bot":"you"} ${face?"face-up":"face-down"} ${p.revealing?"revealing":""}" title="${face?p.card.name+" — "+powerFor(p)+" poder":"Carta oculta até encerrar a rodada"}" aria-label="${face?p.card.name:"Carta virada para baixo"}">${face?`<img class="card-full-image" src="${p.card.image}" alt="${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')">`:`<div class="card-back-design" aria-hidden="true"><span class="card-back-mark">✦</span><span class="card-back-title">BATALHA<br>DO FOLCLORE</span><span class="card-back-rune">ᛟ</span></div>`}</div>`;}).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
-  return `<article class="location" style="--loc:${loc.color}" data-lane="${loc.id}" aria-label="Território"><div class="lane-side opponent-side"><div class="lane-card-row">${sideCards("bot")}</div></div><div class="scenario-center"><div class="scenario-art" aria-hidden="true">${loc.emoji}</div><div class="score-row" aria-label="Pontuação do território"><div class="score-side bot"><strong>${s.bot}</strong></div><span class="score-vs">◆</span><div class="score-side"><strong>${s.you}</strong></div></div></div><div class="lane-side player-side"><div class="lane-card-row">${sideCards("you")}</div></div></article>`;
+  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>{const face=p.revealed;return `<div class="board-card ${side==="bot"?"bot":"you"} ${face?"face-up":"face-down"} ${p.revealing?"revealing":""} ${!face?"queued":""}" data-uid="${p.uid}" title="${face?p.card.name+" — "+powerFor(p)+" poder":"Carta oculta até encerrar a rodada"}" aria-label="${face?p.card.name:"Carta virada para baixo"}">${face?`<img class="card-full-image" src="${p.card.image}" alt="${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')">`:`<div class="card-back-design" aria-hidden="true"><span class="card-back-mark">✦</span><span class="card-back-title">BATALHA<br>DO FOLCLORE</span><span class="card-back-rune">ᛟ</span></div>`}</div>`;}).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
+  const laneClass=s.you>s.bot?"lane-winning-you":s.bot>s.you?"lane-winning-bot":"lane-tied"; return `<article class="location ${laneClass}" style="--loc:${loc.color}" data-lane="${loc.id}" aria-label="Território"><div class="lane-side opponent-side"><div class="lane-card-row">${sideCards("bot")}</div></div><div class="scenario-center"><div class="scenario-art" aria-hidden="true">${loc.emoji}</div><div class="score-row" aria-label="Pontuação do território"><div class="score-side bot"><strong>${s.bot}</strong></div><span class="score-vs">◆</span><div class="score-side"><strong>${s.you}</strong></div></div></div><div class="lane-side player-side"><div class="lane-card-row">${sideCards("you")}</div></div></article>`;
  }).join("");
  $("player-hand").innerHTML=state.hand.map(c=>cardMarkup(c,`${state.selected===c.instanceId?"selected":""} ${c.cost>state.energy?"unaffordable":""}`)).join("");
  attachHandInteractions();
@@ -184,7 +184,7 @@ function botTurn(){
   if(budget<=0)break;
  }
 }
-function resolvePending(){
+async function resolvePending(){
  const batch=shuffle(state.pending);state.pending=[];
  for(const p of batch){
   const lane=p.lane,side=p.side,enemy=side==="you"?"bot":"you";
@@ -220,6 +220,8 @@ function resolvePending(){
   }
   if(p.card.id==="vitoria"&&p.side==="you"&&state.hand.length<7&&state.deck.length)state.hand.push(state.deck.shift());
   state.history.push(`${p.side==="you"?"Você":"Rival"} revelou ${p.card.name} em ${LOCATIONS.find(l=>l.id===lane).name}.`);
+  renderGame();
+  await new Promise(resolve=>setTimeout(resolve,320));
  }
 }
 function finishGame(){
@@ -256,7 +258,7 @@ async function endTurn(){
   state.notice="Revelando as cartas e calculando os territórios...";
   renderGame();
   if(state.round<6) await new Promise(resolve=>setTimeout(resolve,650));
-  resolvePending();
+  await resolvePending();
  }catch(error){
   console.error("Falha ao resolver rodada:",error);
   // Mesmo que uma habilidade tenha erro, não deixa a partida presa na rodada final.
