@@ -53,7 +53,7 @@ function cardArt(card){return card.image?'<img class="card-full-image" src="'+ca
 function cardMarkup(card,classes=""){return `<button type="button" class="hand-card ${classes}" style="--card:${card.color}" data-card="${card.instanceId}" aria-label="Selecionar ${card.name}; custo ${card.cost}; poder ${card.attack}"><img class="card-full-image" src="${card.image}" alt="${card.name}" loading="lazy" onerror="this.classList.add('image-missing')"><span class="card-select-glow" aria-hidden="true"></span></button>`;}
 function renderCollection(){$("collection-grid").innerHTML=CARDS.map(c=>`<button type="button" class="collection-card" style="--card:${c.color}" data-collection-card="${c.id}" aria-label="${c.name}, custo ${c.cost}, poder ${c.attack}"><img class="card-full-image" src="${c.image}" alt="${c.name}" loading="lazy" onerror="this.classList.add('image-missing')"></button>`).join("");}
 function renderGame(){
- $("round-number").textContent=state.round;$("energy-value").textContent=`${state.energy} / ${state.round}`;$("hand-count").textContent=state.hand.length;
+ $("round-number").textContent=state.round;$("battle-round-orb").textContent=state.round;$("energy-value").textContent=`${state.energy} / ${state.round}`;$("hand-count").textContent=state.hand.length;
  $("energy-pips").innerHTML=Array.from({length:6},(_,i)=>`<span class="energy-pip ${i<state.energy?"active":""}"></span>`).join("");$("turn-hint").textContent=state.notice;
  const totals=scoreList();
  $("locations").innerHTML=LOCATIONS.map((loc,i)=>{
@@ -69,8 +69,11 @@ function renderGame(){
  $("result-panel").classList.toggle("hidden",!state.finished);
  if(state.finished){
   const t=scoreList(),you=t.filter(s=>s.you>s.bot).length,bot=t.filter(s=>s.bot>s.you).length,ties=t.filter(s=>s.you===s.bot).length;
-  $("result-panel").innerHTML=`<div><h3>${you>bot?"Vitória lendária!":you===bot?"Empate entre lendas":"O rival levou a melhor"}</h3><p>Territórios conquistados: você ${you} · rival ${bot} · empatados ${ties}.</p></div><button class="button gold" id="play-again">Jogar novamente ↻</button>`;
+  const headline=you>bot?"VITÓRIA!":you===bot?"EMPATE!":"DERROTA!";
+  const message=you>bot?"Você dominou o folclore e venceu o duelo!":you===bot?"As lendas terminaram em equilíbrio. Que tal uma revanche?":"O rival conquistou mais territórios desta vez. Tente outra estratégia!";
+  $("result-panel").innerHTML=`<div class="final-result-copy"><div class="eyebrow">FIM DE JOGO · 6 RODADAS</div><h3 class="${you>bot?"result-win":you===bot?"result-draw":"result-loss"}">${headline}</h3><p>${message}</p><p class="result-score">Territórios conquistados: você <strong>${you}</strong> · rival <strong>${bot}</strong> · empatados <strong>${ties}</strong>.</p></div><div class="result-actions"><button class="button gold" id="play-again">Jogar novamente ↻</button><button class="button quiet" id="exit-game">Sair para o início ⌂</button></div>`;
   $("play-again").addEventListener("click",startGame);
+  $("exit-game").addEventListener("click",()=>{state=null;showScreen("home");});
  }
 }
 function selectCard(instanceId){if(state.finished)return;const c=state.hand.find(x=>x.instanceId===instanceId);if(!c)return;if(state.selected===instanceId){state.selected=null;state.notice="Seleção cancelada.";}else{state.selected=instanceId;state.notice=c.cost>state.energy?`${c.name} custa ${c.cost} de energia; você tem ${state.energy}.`:`${c.name} selecionado: escolha um território livre (máximo 4 cartas por lado em cada local).`;}renderGame();if(c.cost>state.energy)toast(state.notice);}
