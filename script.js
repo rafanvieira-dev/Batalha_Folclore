@@ -38,9 +38,13 @@ const LOCATIONS = [
 const $ = id => document.getElementById(id);
 let state = null, toastTimer;
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function makeDeck(){return shuffle(CARDS.map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
+const DEFAULT_DECK_IDS=CARDS.slice(0,8).map(c=>c.id);
+function loadSavedDeck(){try{const saved=JSON.parse(localStorage.getItem("batalhaFolcloreDeck")||"null");if(Array.isArray(saved)&&saved.length===8&&saved.every(id=>CARDS.some(c=>c.id===id))&&new Set(saved).size===8)return saved;}catch{}return [...DEFAULT_DECK_IDS];}
+let activeDeckIds=loadSavedDeck(),draftDeckIds=[...activeDeckIds];
+function makeDeck(ids=CARDS.map(c=>c.id)){return shuffle(ids.map(id=>CARDS.find(c=>c.id===id)).filter(Boolean).map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
+
 function freshState(){
- const playerDeck=makeDeck(), botDeck=makeDeck();
+ const playerDeck=makeDeck(activeDeckIds), botDeck=makeDeck();
  return {round:1,energy:1,resolving:false,hand:playerDeck.splice(0,3),deck:playerDeck,botHand:botDeck.splice(0,3),botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
 }
 function basePower(card,lane){let n=card.attack+card.defense;if(card.id==="curupira"&&lane==="forest")n+=3;if(card.id==="boto"&&lane==="river")n+=3;if(card.id==="boitata"&&lane==="village")n+=2;return n;}
@@ -48,7 +52,7 @@ function powerFor(entry){return Math.max(0,basePower(entry.card,entry.lane)+(ent
 function laneCards(lane,side,includePending=true){return [...state.played,...(includePending?state.pending:[])].filter(p=>p.lane===lane&&p.side===side);}
 function scoreList(){return LOCATIONS.map(location=>({location,you:state.played.filter(p=>p.lane===location.id&&p.side==="you").reduce((n,p)=>n+powerFor(p),0),bot:state.played.filter(p=>p.lane===location.id&&p.side==="bot").reduce((n,p)=>n+powerFor(p),0)}));}
 function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2300);}
-function showScreen(name){$("home-screen").classList.toggle("hidden",name!=="home");$("collection-screen").classList.toggle("hidden",name!=="collection");$("game-screen").classList.toggle("hidden",name!=="game");window.scrollTo({top:0,behavior:"smooth"});}
+function showScreen(name){$("home-screen").classList.toggle("hidden",name!=="home");$("collection-screen").classList.toggle("hidden",name!=="collection");$("game-screen").classList.toggle("hidden",name!=="game");const deckScreen=$("deck-screen");if(deckScreen)deckScreen.classList.toggle("hidden",name!=="deck");window.scrollTo({top:0,behavior:"smooth"});}
 function cardArt(card){return card.image?'<img class="card-full-image" src="'+card.image+'" alt="'+card.name+'" loading="lazy" onerror="this.classList.add(\'image-missing\')">':'<span class="card-fallback">'+card.name+'</span>';}
 function cardMarkup(card,classes=""){return `<button type="button" class="hand-card ${classes}" style="--card:${card.color}" data-card="${card.instanceId}" aria-label="Selecionar ${card.name}; custo ${card.cost}; poder ${card.attack}"><img class="card-full-image" src="${card.image}" alt="${card.name}" loading="lazy" onerror="this.classList.add('image-missing')"><span class="card-select-glow" aria-hidden="true"></span></button>`;}
 let detailCardContext="collection", detailCardInstance=null, dragTimer=null, activeDrag=null, suppressCardClick=false;
@@ -61,6 +65,23 @@ function showCardDetails(card,context="collection"){
  if(!dialog.open)dialog.showModal();
 }
 function closeCardDetails(){const d=$("card-detail-dialog");if(d&&d.open)d.close();}
+function deckCardMarkup(card,selected){return `<button type="button" class="deck-card ${selected?"is-selected":""}" data-deck-card="${card.id}" aria-pressed="${selected}" style="--card:${card.color}"><span class="deck-card-art"><img src="${card.image}" alt="" loading="lazy" onerror="this.classList.add('image-missing')"><span class="deck-card-cost">${card.cost}</span><span class="deck-card-power">${card.attack+(card.defense||0)}</span></span><span class="deck-card-meta"><strong>${card.name}</strong><small>Custo ${card.cost} · Poder ${card.attack+(card.defense||0)}</small></span><span class="deck-card-toggle">${selected?"✓ No deck":"＋ Adicionar"}</span></button>`;}
+function renderDeckBuilder(){
+ const selected=CARDS.filter(c=>draftDeckIds.includes(c.id));
+ $("deck-count").textContent=draftDeckIds.length+" / 8 cartas";
+ $("deck-status").textContent=draftDeckIds.length===8?(draftDeckIds.join("|")===activeDeckIds.join("|")?"Deck salvo.":"Pronto para salvar suas alterações."):("Selecione mais "+(8-draftDeckIds.length)+" carta(s).");
+ $("deck-available-count").textContent=CARDS.length+" lendas";
+ $("deck-selected-grid").innerHTML=selected.length?selected.map(c=>deckCardMarkup(c,true)).join(""):'<p class="deck-empty">Seu deck está vazio. Adicione cartas da coleção.</p>';
+ $("deck-library-grid").innerHTML=CARDS.filter(c=>!draftDeckIds.includes(c.id)).map(c=>deckCardMarkup(c,false)).join("")||'<p class="deck-empty">Todas as lendas selecionadas.</p>';
+ $("save-deck-button").disabled=draftDeckIds.length!==8||draftDeckIds.join("|")===activeDeckIds.join("|");
+ document.querySelectorAll("[data-deck-card]").forEach(el=>el.addEventListener("click",()=>{
+  const id=el.dataset.deckCard;
+  if(draftDeckIds.includes(id))draftDeckIds=draftDeckIds.filter(x=>x!==id);
+  else if(draftDeckIds.length<8)draftDeckIds.push(id);
+  else {toast("Seu deck já tem 8 cartas. Remova uma antes de adicionar outra.");return;}
+  renderDeckBuilder();
+ }));
+}
 function renderCollection(){$("collection-grid").innerHTML=CARDS.map(c=>`<button type="button" class="collection-card" style="--card:${c.color}" data-collection-card="${c.id}" aria-label="Ver detalhes de ${c.name}"><img class="card-full-image" src="${c.image}" alt="${c.name}" loading="lazy" onerror="this.classList.add('image-missing')"><span class="collection-card-caption"><strong>${c.name}</strong><small>Custo ${c.cost} · Poder ${c.attack+(c.defense||0)}</small></span></button>`).join("");
  $("collection-grid").querySelectorAll("[data-collection-card]").forEach(el=>el.addEventListener("click",()=>{const card=CARDS.find(c=>c.id===el.dataset.collectionCard);if(card)showCardDetails(card,"collection");}));
 }
@@ -240,6 +261,10 @@ async function endTurn(){
 function startGame(){state=freshState();showScreen("game");renderGame();}
 $("start-button").addEventListener("click",startGame);
 $("collection-button").addEventListener("click",()=>{renderCollection();showScreen("collection");});
+$("deck-button").addEventListener("click",()=>{draftDeckIds=[...activeDeckIds];renderDeckBuilder();showScreen("deck");});
+$("deck-back").addEventListener("click",()=>showScreen("home"));
+$("save-deck-button").addEventListener("click",()=>{if(draftDeckIds.length!==8)return;activeDeckIds=[...draftDeckIds];try{localStorage.setItem("batalhaFolcloreDeck",JSON.stringify(activeDeckIds));}catch{}renderDeckBuilder();toast("Deck salvo! Ele será usado na próxima partida.");});
+
 $("collection-back").addEventListener("click",()=>showScreen("home"));
 $("brand-home").addEventListener("click",e=>{e.preventDefault();showScreen("home");});
 $("restart-button").addEventListener("click",startGame);
