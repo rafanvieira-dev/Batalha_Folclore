@@ -41,7 +41,7 @@ function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=M
 function makeDeck(){return shuffle(CARDS.map((c,i)=>({...c,instanceId:"c"+i+"_"+Math.random().toString(36).slice(2,7)})));}
 function freshState(){
  const playerDeck=makeDeck(), botDeck=makeDeck();
- return {round:1,energy:1,hand:playerDeck.splice(0,3),deck:playerDeck,botHand:botDeck.splice(0,3),botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
+ return {round:1,energy:1,resolving:false,hand:playerDeck.splice(0,3),deck:playerDeck,botHand:botDeck.splice(0,3),botDeck,played:[],pending:[],selected:null,finished:false,uid:1,notice:"Escolha uma carta e um território. Suas jogadas serão reveladas ao encerrar a rodada.",history:[]};
 }
 function basePower(card,lane){let n=card.attack+card.defense;if(card.id==="curupira"&&lane==="forest")n+=3;if(card.id==="boto"&&lane==="river")n+=3;if(card.id==="boitata"&&lane==="village")n+=2;return n;}
 function powerFor(entry){return Math.max(0,basePower(entry.card,entry.lane)+(entry.bonus||0));}
@@ -59,12 +59,13 @@ function renderGame(){
  $("locations").innerHTML=LOCATIONS.map((loc,i)=>{
   const s=totals.find(t=>t.location.id===loc.id);
   const youCount=laneCards(loc.id,"you").length,botCount=laneCards(loc.id,"bot").length;
-  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>`<div class="board-card ${side==="bot"?"bot":"you"} ${p.revealed?"":"queued"}" title="${p.card.name} — ${p.revealed?powerFor(p)+" poder":"aguardando revelação"}" aria-label="${p.card.name}"><img class="card-full-image" src="${p.card.image}" alt="${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')"></div>`).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
+  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>{const face=p.revealed;return \`<div class="board-card \${side==="bot"?"bot":"you"} \${face?"face-up":"face-down"} \${p.revealing?"revealing":""}" title="\${face?p.card.name+" — "+powerFor(p)+" poder":"Carta oculta até encerrar a rodada"}" aria-label="\${face?p.card.name:"Carta virada para baixo"}">\${face?\`<img class="card-full-image" src="\${p.card.image}" alt="\${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')">\`:\`<div class="card-back-design" aria-hidden="true"><span class="card-back-mark">✦</span><span class="card-back-title">BATALHA<br>DO FOLCLORE</span><span class="card-back-rune">ᛟ</span></div>\`}</div>\`;}).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
   return `<article class="location" style="--loc:${loc.color}" data-lane="${loc.id}" aria-label="Território"><div class="lane-side opponent-side"><div class="lane-card-row">${sideCards("bot")}</div></div><div class="scenario-center"><div class="scenario-art" aria-hidden="true">${loc.emoji}</div><div class="score-row" aria-label="Pontuação do território"><div class="score-side bot"><strong>${s.bot}</strong></div><span class="score-vs">◆</span><div class="score-side"><strong>${s.you}</strong></div></div></div><div class="lane-side player-side"><div class="lane-card-row">${sideCards("you")}</div></div></article>`;
  }).join("");
  $("player-hand").innerHTML=state.hand.map(c=>cardMarkup(c,`${state.selected===c.instanceId?"selected":""} ${c.cost>state.energy?"unaffordable":""}`)).join("");
  $("player-hand").querySelectorAll("[data-card]").forEach(el=>el.addEventListener("click",()=>selectCard(el.dataset.card)));
  $("locations").querySelectorAll("[data-lane]").forEach(el=>el.addEventListener("click",()=>playCard(el.dataset.lane)));
+ $("locations").querySelectorAll(".board-card.revealing").forEach(el=>el.addEventListener("animationend",()=>el.classList.remove("revealing"),{once:true}));
  $("end-turn-button").disabled=state.finished;
  $("result-panel").classList.toggle("hidden",!state.finished);
  if(state.finished){
@@ -134,7 +135,7 @@ function resolvePending(){
   if(p.card.id==="ioty")p.bonus+=Math.min(2,ownBefore.length);
   if(p.card.id==="jurupari"&&enemyBefore.length>0)p.bonus+=2;
   if(p.card.id==="pisadeira"){const target=enemyBefore.slice().sort((a,b)=>powerFor(b)-powerFor(a))[0];if(target)target.bonus-=2;}
-  p.revealed=true;state.played.push(p);
+  p.revealed=true;p.revealing=true;state.played.push(p);
   if(p.card.id==="iara"){
    const target=[...state.played].filter(x=>x.lane===lane&&x.side===enemy).sort((a,b)=>powerFor(b)-powerFor(a))[0];
    if(target)target.bonus-=2;
@@ -143,14 +144,20 @@ function resolvePending(){
   state.history.push(`${p.side==="you"?"Você":"Rival"} revelou ${p.card.name} em ${LOCATIONS.find(l=>l.id===lane).name}.`);
  }
 }
-function endTurn(){
- if(state.finished)return;
- botTurn();resolvePending();
- if(state.round>=6){state.finished=true;state.notice="A sexta rodada terminou. Confira o resultado final!";renderGame();$("result-panel").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
+async function endTurn(){
+ if(state.finished||state.resolving)return;
+ state.resolving=true;$("end-turn-button").disabled=true;
+ botTurn();
+ state.notice="As lendas estão revelando suas cartas...";
+ renderGame();
+ await new Promise(resolve=>setTimeout(resolve,650));
+ resolvePending();
+ state.resolving=false;
+ if(state.round>=6){state.finished=true;state.notice="A sexta rodada terminou. Confira a pontuação dos três territórios!";renderGame();$("result-panel").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
  state.round++;state.energy=state.round;state.selected=null;
  if(state.deck.length&&state.hand.length<7)state.hand.push(state.deck.shift());
  if(state.botDeck.length&&state.botHand.length<7)state.botHand.push(state.botDeck.shift());
- state.notice=`Rodada ${state.round}: energia renovada para ${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.`;
+ state.notice=\`Rodada \${state.round}: energia renovada para \${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.\`;
  renderGame();
 }
 function startGame(){state=freshState();showScreen("game");renderGame();}
