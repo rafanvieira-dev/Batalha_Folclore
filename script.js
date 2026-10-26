@@ -82,7 +82,7 @@ function showCardDetails(card,context="collection"){
  if(!dialog.open)dialog.showModal();
 }
 function closeCardDetails(){const d=$("card-detail-dialog");if(d&&d.open)d.close();}
-function deckCardMarkup(card,selected){return `<button type="button" class="deck-card ${selected?"is-selected":""}" data-deck-card="${card.id}" aria-pressed="${selected}" style="--card:${card.color}"><span class="deck-card-art"><img src="${card.image}" alt="" loading="lazy" onerror="this.classList.add('image-missing')"></span><span class="deck-card-meta"><strong>${card.name}</strong><small>Custo ${card.cost} · Poder ${card.attack+(card.defense||0)}</small></span><span class="deck-card-toggle">${selected?"✓ No deck":"＋ Adicionar"}</span></button>`;}
+function deckCardMarkup(card,selected){return `<button type="button" class="deck-card ${selected?"is-selected":""}" data-deck-card="${card.id}" aria-pressed="${selected}" style="--card:${card.color}"><span class="deck-card-art"><img src="${card.image}" alt="" loading="lazy" onerror="this.classList.add('image-missing')"></span><span class="deck-card-meta"><strong>${card.name}</strong><small>Custo ${card.cost} · Poder ${card.attack+(card.defense||0)}</small></span><span class="deck-card-toggle">${selected?"✓ No deck":"＋ Adicionar"}</span><span class="deck-card-details-hint">ⓘ Ver detalhes</span></button>`;}
 function renderDeckTabs(){
  const tabs=$("deck-tabs");if(!tabs)return;
  tabs.innerHTML=deckProfiles.decks.map((d,i)=>`<button type="button" role="tab" class="deck-tab ${d.id===deckProfiles.activeId?"active":""}" data-deck-tab="${d.id}" aria-selected="${d.id===deckProfiles.activeId}">Deck ${i+1}</button>`).join("");
@@ -102,7 +102,7 @@ function renderDeckBuilder(){
  $("deck-selected-grid").innerHTML=selected.length?selected.map(c=>deckCardMarkup(c,true)).join(""):'<p class="deck-empty">Seu deck está vazio. Adicione cartas da coleção.</p>';
  $("deck-library-grid").innerHTML=CARDS.filter(c=>!draftDeckIds.includes(c.id)).map(c=>deckCardMarkup(c,false)).join("")||'<p class="deck-empty">Todas as lendas selecionadas.</p>';
  $("save-deck-button").disabled=draftDeckIds.length!==DECK_SIZE||draftDeckIds.join("|")===activeDeckIds.join("|");
- document.querySelectorAll("[data-deck-card]").forEach(el=>el.addEventListener("click",()=>{
+ document.querySelectorAll("[data-deck-card]").forEach(el=>el.addEventListener("click",e=>{if(e.target.closest(".deck-card-details-hint")){const detail=CARDS.find(c=>c.id===el.dataset.deckCard);if(detail)showCardDetails(detail,"collection");return;}
   const id=el.dataset.deckCard;
   if(draftDeckIds.includes(id))draftDeckIds=draftDeckIds.filter(x=>x!==id);
   else if(draftDeckIds.length<DECK_SIZE)draftDeckIds.push(id);
