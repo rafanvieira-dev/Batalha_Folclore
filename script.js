@@ -59,7 +59,7 @@ function renderGame(){
  $("locations").innerHTML=LOCATIONS.map((loc,i)=>{
   const s=totals.find(t=>t.location.id===loc.id);
   const youCount=laneCards(loc.id,"you").length,botCount=laneCards(loc.id,"bot").length;
-  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>{const face=p.revealed;return \`<div class="board-card \${side==="bot"?"bot":"you"} \${face?"face-up":"face-down"} \${p.revealing?"revealing":""}" title="\${face?p.card.name+" — "+powerFor(p)+" poder":"Carta oculta até encerrar a rodada"}" aria-label="\${face?p.card.name:"Carta virada para baixo"}">\${face?\`<img class="card-full-image" src="\${p.card.image}" alt="\${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')">\`:\`<div class="card-back-design" aria-hidden="true"><span class="card-back-mark">✦</span><span class="card-back-title">BATALHA<br>DO FOLCLORE</span><span class="card-back-rune">ᛟ</span></div>\`}</div>\`;}).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
+  const sideCards=(side)=>{const cards=[...state.played,...state.pending].filter(p=>p.lane===loc.id&&p.side===side);return cards.length?cards.map(p=>{const face=p.revealed;return `<div class="board-card ${side==="bot"?"bot":"you"} ${face?"face-up":"face-down"} ${p.revealing?"revealing":""}" title="${face?p.card.name+" — "+powerFor(p)+" poder":"Carta oculta até encerrar a rodada"}" aria-label="${face?p.card.name:"Carta virada para baixo"}">${face?`<img class="card-full-image" src="${p.card.image}" alt="${p.card.name}" loading="lazy" onerror="this.classList.add('image-missing')">`:`<div class="card-back-design" aria-hidden="true"><span class="card-back-mark">✦</span><span class="card-back-title">BATALHA<br>DO FOLCLORE</span><span class="card-back-rune">ᛟ</span></div>`}</div>`;}).join(""):'<span class="empty-slot">— espaço vazio —</span>';};
   return `<article class="location" style="--loc:${loc.color}" data-lane="${loc.id}" aria-label="Território"><div class="lane-side opponent-side"><div class="lane-card-row">${sideCards("bot")}</div></div><div class="scenario-center"><div class="scenario-art" aria-hidden="true">${loc.emoji}</div><div class="score-row" aria-label="Pontuação do território"><div class="score-side bot"><strong>${s.bot}</strong></div><span class="score-vs">◆</span><div class="score-side"><strong>${s.you}</strong></div></div></div><div class="lane-side player-side"><div class="lane-card-row">${sideCards("you")}</div></div></article>`;
  }).join("");
  $("player-hand").innerHTML=state.hand.map(c=>cardMarkup(c,`${state.selected===c.instanceId?"selected":""} ${c.cost>state.energy?"unaffordable":""}`)).join("");
@@ -158,7 +158,7 @@ async function endTurn(){
  state.round++;state.energy=state.round;state.selected=null;
  if(state.deck.length&&state.hand.length<7)state.hand.push(state.deck.shift());
  if(state.botDeck.length&&state.botHand.length<7)state.botHand.push(state.botDeck.shift());
- state.notice=\`Rodada \${state.round}: energia renovada para \${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.\`;
+ state.notice=`Rodada ${state.round}: energia renovada para ${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.`;
  renderGame();
 }
 function startGame(){state=freshState();showScreen("game");renderGame();}
