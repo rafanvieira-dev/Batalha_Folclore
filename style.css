@@ -591,3 +591,19 @@ body:has(#game-screen:not(.hidden)) #end-turn-button{display:flex!important;visi
     box-sizing: border-box !important;
   }
 }
+
+/* Resultado final: vitória, empate/derrota e opções de saída */
+body:has(#game-screen:not(.hidden)) .result-panel:not(.hidden){
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important;
+ padding:20px 16px!important;margin:14px 0 18px!important;border:1px solid #d7b66a66!important;
+ border-radius:18px!important;background:linear-gradient(145deg,#1b2435f7,#111723f7)!important;
+ box-shadow:0 12px 35px #0007!important;text-align:center!important;
+}
+body:has(#game-screen:not(.hidden)) .final-result-copy h3{font-size:clamp(24px,6vw,34px)!important;line-height:1.1!important;margin:8px 0!important;letter-spacing:.06em!important}
+body:has(#game-screen:not(.hidden)) .final-result-copy p{font-size:13px!important;line-height:1.5!important;margin:8px 0!important;color:#d8deea!important}
+body:has(#game-screen:not(.hidden)) .final-result-copy .result-win{color:#f3d27d!important;text-shadow:0 0 18px #e3b95d55!important}
+body:has(#game-screen:not(.hidden)) .final-result-copy .result-loss{color:#ff9aab!important}
+body:has(#game-screen:not(.hidden)) .final-result-copy .result-draw{color:#a9d9f4!important}
+body:has(#game-screen:not(.hidden)) .final-result-copy .result-score{padding:10px 6px!important;border-radius:10px!important;background:#ffffff0b!important}
+body:has(#game-screen:not(.hidden)) .result-actions{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+body:has(#game-screen:not(.hidden)) .result-actions .button{width:100%!important;min-height:44px!important;justify-content:center!important}
