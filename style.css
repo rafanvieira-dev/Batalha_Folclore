@@ -472,7 +472,7 @@ body:has(#game-screen:not(.hidden)) .empty-slot,
 body:has(#game-screen:not(.hidden)) .play-here,
 body:has(#game-screen:not(.hidden)) .hand-header p,
 body:has(#game-screen:not(.hidden)) #hand-count,
-body:has(#game-screen:not(.hidden)) #result-panel{display:none!important}
+/* O painel de resultado deve aparecer ao terminar a sexta rodada. */
 body:has(#game-screen:not(.hidden)) .game-screen{padding-top:8px;gap:8px;min-height:100vh}
 body:has(#game-screen:not(.hidden)) .locations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:1;align-items:stretch}
 body:has(#game-screen:not(.hidden)) .location{display:flex;flex-direction:column;justify-content:space-between;min-height:55vh;height:100%;padding:8px 4px;gap:8px;border:1px solid #8c77bb55;border-radius:12px;background:linear-gradient(180deg,#081021b8,#0b1025a8);box-shadow:inset 0 0 22px #8c70ff12;overflow:visible}
