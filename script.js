@@ -22,7 +22,13 @@ const CARDS = [
 {id:"sao-saci",name:"Romãozinho",subtitle:"O menino travesso",emoji:"🧒",cost:1,attack:2,defense:2,color:"#b66b49",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
 {id:"estrela",name:"Estrela do Mar",subtitle:"Encanto das águas",emoji:"⭐",cost:1,attack:1,defense:3,color:"#d28bba",ability:"Recebe +2 de poder no Rio das Iaras."},
 {id:"guardiao",name:"Anhangá",image:"assets/cartas/anhanga.png",subtitle:"O espírito protetor",emoji:"🦌",cost:5,attack:6,defense:5,color:"#d1d1a2",ability:"Ao revelar: +2 de poder se você estiver perdendo em dois cenários."},
-{id:"tutu",name:"Tutu Marambá",image:"assets/cartas/tutameia.png",subtitle:"O vulto das histórias",emoji:"🐗",cost:3,attack:4,defense:4,color:"#85634c",ability:"Ao revelar: +2 de poder se houver três ou mais cartas neste cenário."}
+{id:"tutu",name:"Tutu Marambá",image:"assets/cartas/tutameia.png",subtitle:"O vulto das histórias",emoji:"🐗",cost:3,attack:4,defense:4,color:"#85634c",ability:"Ao revelar: +2 de poder se houver três ou mais cartas neste cenário."},
+{id:"lobisomem",name:"Lobisomem",subtitle:"A fera da lua cheia",emoji:"🐺",image:"assets/cartas/lobisomem.png",cost:4,attack:6,defense:3,color:"#786b8f",ability:"Ao revelar: +2 de poder se houver outra carta rival aqui."},
+{id:"boto-tucuxi",name:"Boto Tucuxi",subtitle:"O guardião das águas",emoji:"🐬",image:"assets/cartas/boto-tucuxi.png",cost:2,attack:3,defense:3,color:"#528ca9",ability:"Recebe +2 de poder no Rio das Iaras."},
+{id:"capelobo",name:"Capelobo",subtitle:"O caçador das sombras",emoji:"🐾",image:"assets/cartas/capelobo.png",cost:4,attack:5,defense:4,color:"#8d6e54",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
+{id:"comadre-fulozinha",name:"Comadre Fulozinha",subtitle:"A protetora da mata",emoji:"🍃",image:"assets/cartas/comadre-fulozinha.png",cost:2,attack:2,defense:4,color:"#5f9b66",ability:"Recebe +2 de poder na Floresta Encantada."},
+{id:"ioty",name:"Ioty",subtitle:"O mistério ancestral",emoji:"🔮",image:"assets/cartas/ioty.png",cost:3,attack:4,defense:3,color:"#9275b9",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
+{id:"jurupari",name:"Jurupari",subtitle:"O espírito da noite",emoji:"🌘",image:"assets/cartas/jurupari.png",cost:4,attack:5,defense:4,color:"#685b88",ability:"Ao revelar: +2 de poder se houver rival neste território."}
 ];
 const LOCATIONS = [
 {id:"forest",name:"Floresta Encantada",desc:"Curupira recebe +3 de poder aqui.",emoji:"🌲",color:"#75b879"},
