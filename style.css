@@ -1025,3 +1025,41 @@ body:has(#game-screen:not(.hidden)) #end-turn-button{min-height:48px!important;p
  body:has(#game-screen:not(.hidden)) #locations .location .score-side strong{font-size:20px!important}
  body:has(#game-screen:not(.hidden)) .player-hand .hand-card{flex-basis:clamp(108px,32vw,140px)!important;width:clamp(108px,32vw,140px)!important}
 }
+
+
+/* Pontuação de poder sempre legível no centro de cada cenário */
+body:has(#game-screen:not(.hidden)) #locations .location .scenario-center{z-index:1}
+body:has(#game-screen:not(.hidden)) #locations .location .score-row{
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+ align-items:center!important;justify-items:stretch!important;gap:8px!important;
+ width:min(68%,240px)!important;min-width:142px!important;
+ padding:5px 10px!important;margin-left:auto!important;
+ border:1px solid #ffffff2b!important;border-radius:9px!important;
+ background:linear-gradient(135deg,#080b17ed,#17142aeF)!important;
+ box-shadow:0 4px 16px #0007,inset 0 0 12px #ffffff08!important;
+}
+body:has(#game-screen:not(.hidden)) #locations .location .score-side{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ min-width:0!important;position:relative!important;
+}
+body:has(#game-screen:not(.hidden)) #locations .location .score-side strong{
+ display:block!important;font:900 25px/1 'Barlow Condensed',sans-serif!important;
+ color:#a8f2ff!important;text-shadow:0 0 12px #39cfff88!important;
+ opacity:1!important;visibility:visible!important;
+}
+body:has(#game-screen:not(.hidden)) #locations .location .score-side.bot strong{
+ color:#ffadd4!important;text-shadow:0 0 12px #ff5d9c88!important;
+}
+body:has(#game-screen:not(.hidden)) #locations .location .score-vs{
+ display:block!important;color:#f4d58b!important;font-size:11px!important;
+ text-align:center!important;opacity:.95!important;
+}
+body:has(#game-screen:not(.hidden)) #locations .location.lane-winning-you .score-row{border-color:#5ddbd0aa!important}
+body:has(#game-screen:not(.hidden)) #locations .location.lane-winning-bot .score-row{border-color:#ef83b7aa!important}
+@media(max-width:700px){
+ body:has(#game-screen:not(.hidden)) #locations .location .score-row{
+  width:min(72%,240px)!important;min-width:142px!important;gap:7px!important;
+  padding:6px 10px!important;
+ }
+ body:has(#game-screen:not(.hidden)) #locations .location .score-side strong{font-size:25px!important}
+}
