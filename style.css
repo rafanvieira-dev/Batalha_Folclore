@@ -839,3 +839,7 @@ body:has(#game-screen:not(.hidden)) #locations .location .empty-slot{display:fle
 .deck-card-art img{object-fit:contain!important}
 .deck-card-cost,.deck-card-power{display:none!important}
 @media(max-width:600px){.deck-manager{align-items:stretch;flex-direction:column;padding:9px}.deck-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.deck-tab{min-width:0;padding:10px 4px;font-size:11px}.deck-add-button{justify-content:center}.deck-toolbar{margin-top:10px}}
+
+.deck-card-details-hint{display:block;padding:6px 7px;border-top:1px solid #ffffff12;background:#0b1220;color:#d8c6f6;font-size:10px;font-weight:800;text-align:center}
+.deck-card:hover .deck-card-details-hint,.deck-card:focus-visible .deck-card-details-hint{color:#f4d68c;background:#1c2131}
+@media(max-width:600px){.deck-card-details-hint{font-size:9px;padding:6px 2px}}
