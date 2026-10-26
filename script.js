@@ -170,20 +170,40 @@ function finishGame(){
 }
 async function endTurn(){
  if(!state||state.finished||state.resolving)return;
- state.resolving=true;$("end-turn-button").disabled=true;
+ state.resolving=true;
+ const button=$("end-turn-button");
+ if(button)button.disabled=true;
  try{
+  // O rival joga e todas as cartas preparadas são contabilizadas nesta rodada.
   botTurn();
-  state.notice="As lendas estão revelando suas cartas...";
+  state.notice="Revelando as cartas e calculando os territórios...";
   renderGame();
-  await new Promise(resolve=>setTimeout(resolve,650));
+  if(state.round<6) await new Promise(resolve=>setTimeout(resolve,650));
   resolvePending();
  }catch(error){
-  console.error("Erro ao resolver a rodada:",error);
-  state.notice="As cartas foram contabilizadas para encerrar a partida.";
+  console.error("Falha ao resolver rodada:",error);
+  // Mesmo que uma habilidade tenha erro, não deixa a partida presa na rodada final.
+  if(state.round>=6){
+   state.pending.forEach(p=>{p.revealed=true;p.revealing=false;state.played.push(p);});
+   state.pending=[];
+  }
+ }finally{
+  if(state)state.resolving=false;
  }
- state.resolving=false;
- if(state.round>=6){finishGame();renderGame();$("result-panel").classList.remove("hidden");return;}
- state.round++;state.energy=state.round;state.selected=null;
+ if(!state)return;
+ if(state.round>=6){
+  // Finalização síncrona: não avança para uma sétima rodada.
+  finishGame();
+  renderGame();
+  const panel=$("result-panel");
+  if(panel){panel.classList.remove("hidden");panel.style.display="flex";panel.scrollIntoView({behavior:"smooth",block:"start"});}
+  const endButton=$("end-turn-button");
+  if(endButton)endButton.disabled=true;
+  return;
+ }
+ state.round++;
+ state.energy=state.round;
+ state.selected=null;
  if(state.deck.length&&state.hand.length<7)state.hand.push(state.deck.shift());
  if(state.botDeck.length&&state.botHand.length<7)state.botHand.push(state.botDeck.shift());
  state.notice=`Rodada ${state.round}: energia renovada para ${state.energy}. Escolha suas cartas; as jogadas serão reveladas ao fim da rodada.`;
