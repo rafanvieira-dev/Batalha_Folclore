@@ -206,3 +206,78 @@ footer{border-color:#4e3d6044}
 
 .show-art{padding:0;overflow:hidden}
 .hero-card-image{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+
+
+/* ARENA HORIZONTAL — referência de batalha em três territórios */
+.game-screen{max-width:100%;padding-top:14px}
+.game-topline{margin-bottom:10px;padding:10px 16px}
+.game-topline>div:first-child .eyebrow{font-size:9px}
+.game-topline h2{font-size:30px;margin:3px 0 0}
+.energy-row{margin-bottom:12px;padding:8px 13px}
+.locations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}
+.location{display:grid;grid-template-rows:auto minmax(92px,1fr) auto minmax(92px,1fr) auto;align-content:stretch;min-width:0;border-radius:8px;background:linear-gradient(180deg,#111324,#0a0b14);border:1px solid #65527b;box-shadow:0 8px 24px #0008,inset 0 0 20px #9c68d20a}
+.location:before{height:3px}
+.lane-side{min-width:0;padding:7px;background:linear-gradient(180deg,#1a1424,#11101b)}
+.opponent-side{border-bottom:1px solid #a55e7844;background:linear-gradient(180deg,#241323,#15101c)}
+.player-side{border-top:1px solid #4a8b9a44;background:linear-gradient(180deg,#101a25,#12101b)}
+.lane-side-label{font-size:8px;letter-spacing:1px}
+.lane-card-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;min-height:0;align-content:start}
+.board-card{aspect-ratio:2/3;width:100%;height:auto;min-height:0!important;border-radius:4px;border-color:#b28bd0;background:#0b0a12;box-shadow:0 3px 10px #0008}
+.board-card.bot{border-color:#c4779e}
+.board-card .card-full-image{object-fit:cover}
+.board-card.queued{opacity:.8}
+.empty-slot{min-height:54px;font-size:8px;border-color:#6c5b7a55;background:#090a1455}
+.scenario-center{min-height:145px;padding:12px 7px 9px;background:linear-gradient(180deg,#111323,#171021);border-top:1px solid #8a6ca455;border-bottom:1px solid #8a6ca455}
+.scenario-art{font-size:42px;margin-bottom:3px}
+.scenario-kicker{font-size:7px;letter-spacing:1.6px}
+.scenario-center h3{font-size:clamp(16px,1.35vw,23px);margin:4px 0}
+.scenario-center p{font-size:8px;margin-bottom:6px}
+.scenario-center .score-row{max-width:100%;padding:4px 5px;border-radius:5px}
+.scenario-center .score-side small{font-size:7px}
+.scenario-center .score-side strong{font-size:23px}
+.scenario-center .score-vs{font-size:8px}
+.play-here{font-size:9px;padding:7px 4px;margin-top:4px}
+.hand-header{margin:14px 0 8px;padding:9px 13px}
+.hand-header h3{font-size:22px}
+.hand-header p{font-size:9px}
+.player-hand{grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.hand-card{aspect-ratio:2/3;min-height:0!important;border-radius:7px}
+.hand-card .card-full-image{object-fit:cover}
+@media(min-width:1000px){
+ .game-screen{padding-top:12px}
+ .locations{min-height:420px}
+ .location{grid-template-rows:auto minmax(105px,1fr) auto minmax(105px,1fr) auto}
+ .scenario-center{min-height:150px}
+ .lane-side{padding:8px}
+ .empty-slot{min-height:70px}
+ .player-hand{grid-template-columns:repeat(6,minmax(0,1fr));max-width:1000px;margin:0 auto}
+}
+@media(max-width:850px){
+ .locations{gap:6px}
+ .lane-side{padding:5px}
+ .lane-side-label{font-size:7px;letter-spacing:.5px}
+ .lane-card-row{gap:3px}
+ .scenario-center{min-height:135px;padding:8px 5px}
+ .scenario-art{font-size:34px}
+ .scenario-center h3{font-size:16px}
+ .scenario-center p{font-size:7px}
+ .scenario-center .score-side strong{font-size:20px}
+ .empty-slot{font-size:7px}
+}
+@media(max-width:560px){
+ .game-topline h2{font-size:25px}
+ .locations{grid-template-columns:1fr;gap:10px}
+ .location{grid-template-rows:auto auto auto auto auto}
+ .lane-side{padding:8px}
+ .lane-card-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .board-card{max-height:145px}
+ .scenario-center{min-height:120px}
+ .scenario-art{font-size:40px}
+ .scenario-center h3{font-size:21px}
+ .scenario-center p{font-size:9px}
+ .scenario-center .score-side strong{font-size:23px}
+ .player-hand{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .hand-header{gap:8px}
+ .hand-header p{max-width:170px}
+ .hand-header .button{padding:9px;font-size:9px}
+}
