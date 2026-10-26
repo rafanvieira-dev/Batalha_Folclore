@@ -65,7 +65,7 @@ function renderGame(){
  $("player-hand").innerHTML=state.hand.map(c=>cardMarkup(c,`${state.selected===c.instanceId?"selected":""} ${c.cost>state.energy?"unaffordable":""}`)).join("");
  $("player-hand").querySelectorAll("[data-card]").forEach(el=>el.addEventListener("click",()=>selectCard(el.dataset.card)));
  $("locations").querySelectorAll("[data-lane]").forEach(el=>el.addEventListener("click",()=>playCard(el.dataset.lane)));
- $("locations").querySelectorAll(".board-card.revealing").forEach(el=>el.addEventListener("animationend",()=>el.classList.remove("revealing"),{once:true}));
+ $("locations").querySelectorAll(".board-card.revealing").forEach(el=>el.addEventListener("animationend",()=>{el.classList.remove("revealing");const card=state.played.find(p=>String(p.uid)===el.dataset.uid);if(card)card.revealing=false;},{once:true}));
  $("end-turn-button").disabled=state.finished;
  $("result-panel").classList.toggle("hidden",!state.finished);
  if(state.finished){
