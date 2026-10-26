@@ -1,34 +1,34 @@
 const CARDS = [
-{id:"saci",name:"Saci-Pererê",image:"assets/cartas/saci.png",subtitle:"O redemoinho travesso",emoji:"🌪️",cost:1,attack:3,defense:1,color:"#a95f3c",ability:"Ao revelar: ganha +2 de poder se for a única carta sua aqui."},
-{id:"iara",name:"Iara",image:"assets/cartas/iara.png",subtitle:"A voz das águas",emoji:"🧜🏽‍♀️",cost:2,attack:2,defense:4,color:"#347f9b",ability:"Ao revelar: enfraquece em 2 o maior rival neste território."},
-{id:"curupira",name:"Curupira",image:"assets/cartas/curupira.png",subtitle:"Guardião da mata",emoji:"🌿",cost:2,attack:3,defense:3,color:"#628e4e",ability:"Recebe +3 de poder na Floresta Encantada."},
-{id:"cuca",name:"Cuca",image:"assets/cartas/cuca.png",subtitle:"Feitiço da noite",emoji:"🐊",cost:3,attack:5,defense:2,color:"#8d6ab0",ability:"Ao revelar: +2 de poder se houver rival neste território."},
-{id:"boitata",name:"Boitatá",image:"assets/cartas/boitata.png",subtitle:"A chama protetora",emoji:"🐍",cost:3,attack:4,defense:4,color:"#c68e38",ability:"Recebe +2 de poder na Vila Assombrada."},
-{id:"boto",name:"Boto-cor-de-rosa",image:"assets/cartas/boto.png",subtitle:"Mistério dos rios",emoji:"🐬",cost:1,attack:2,defense:2,color:"#b9668c",ability:"Recebe +3 de poder no Rio das Iaras."},
-{id:"mula",name:"Mula sem Cabeça",image:"assets/cartas/mula.png",subtitle:"Lenda em chamas",emoji:"🔥",cost:4,attack:6,defense:3,color:"#b84c3b",ability:"Ao revelar: +2 de poder se você estiver perdendo aqui."},
-{id:"vitoria",name:"Vitória-Régia",image:"assets/cartas/vitoria-regia.png",subtitle:"A beleza da lagoa",emoji:"🪷",cost:2,attack:1,defense:5,color:"#4c9a81",ability:"Ao revelar: compra uma carta se houver espaço na mão."},
-{id:"mapinguari",name:"Mapinguari",image:"assets/cartas/mapinguari.png",subtitle:"O gigante da mata",emoji:"🦣",cost:5,attack:7,defense:4,color:"#8b6d4d",ability:"Poder bruto para virar uma disputa."},
-{id:"corposeco",name:"Corpo-Seco",image:"assets/cartas/corpo-seco.png",subtitle:"A maldição errante",emoji:"👻",cost:3,attack:3,defense:4,color:"#89939d",ability:"Ao revelar: +2 de poder para cada carta rival aqui (máximo +4)."},
-{id:"maedagua",name:"Mãe-d'Água",image:"assets/cartas/mae-dagua.png",subtitle:"Senhora das fontes",emoji:"🫧",cost:4,attack:4,defense:5,color:"#4b9eb4",ability:"Ao revelar: +2 de poder se você controlar outro território."},
-{id:"negrinho",name:"Negrinho do Pastoreio",image:"assets/cartas/negrinho-do-pastoreio.png",subtitle:"O guia das trilhas",emoji:"✨",cost:2,attack:2,defense:3,color:"#c69b5d",ability:"Ao revelar: +1 de poder para cada carta sua aqui (máximo +3)."},
-{id:"boitata-guardiao",name:"Boiúna",image:"assets/cartas/boiuna.png",subtitle:"A serpente dos rios",emoji:"🐉",cost:4,attack:5,defense:5,color:"#417e9a",ability:"Ao revelar: +2 de poder no Rio das Iaras."},
-{id:"matinta",name:"Matinta-Pereira",image:"assets/cartas/matinta-pereira.png",subtitle:"O assobio da noite",emoji:"🦉",cost:2,attack:3,defense:2,color:"#7764a7",ability:"Ao revelar: recebe +2 se o rival já tiver duas cartas aqui."},
-{id:"caipora",name:"Caipora",image:"assets/cartas/caipora.png",subtitle:"Protetora dos animais",emoji:"🏹",cost:2,attack:2,defense:4,color:"#4e9a62",ability:"Recebe +2 de poder na Floresta Encantada."},
-{id:"caboclo",name:"Caboclo-d'Água",image:"assets/cartas/caboclo-dagua.png",subtitle:"O guardião do igarapé",emoji:"🛶",cost:3,attack:3,defense:5,color:"#438fa6",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
-{id:"mulaouro",name:"Mãe do Ouro",subtitle:"Luz que protege tesouros",emoji:"🌟",cost:3,attack:4,defense:3,color:"#c49a39",ability:"Ao revelar: +2 de poder se você estiver vencendo aqui."},
-{id:"onca",name:"Onça da Mão Torta",subtitle:"A fera encantada",emoji:"🐆",cost:4,attack:6,defense:3,color:"#bd783d",ability:"Ao revelar: +1 de poder por carta sua aqui (máximo +3)."},
-{id:"pisadeira",name:"Pisadeira",subtitle:"O terror da madrugada",emoji:"🌑",cost:3,attack:4,defense:3,color:"#8c526b",ability:"Ao revelar: reduz em 2 o poder de uma carta rival aqui."},
-{id:"sereia",name:"Sereia do Rio",subtitle:"O canto profundo",emoji:"🧜‍♀️",cost:4,attack:4,defense:5,color:"#4d8fc2",ability:"Ao revelar: +2 de poder se o rival tiver mais poder aqui."},
-{id:"sao-saci",name:"Romãozinho",subtitle:"O menino travesso",emoji:"🧒",cost:1,attack:2,defense:2,color:"#b66b49",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
-{id:"estrela",name:"Estrela do Mar",subtitle:"Encanto das águas",emoji:"⭐",cost:1,attack:1,defense:3,color:"#d28bba",ability:"Recebe +2 de poder no Rio das Iaras."},
-{id:"guardiao",name:"Anhangá",image:"assets/cartas/anhanga.png",subtitle:"O espírito protetor",emoji:"🦌",cost:5,attack:6,defense:5,color:"#d1d1a2",ability:"Ao revelar: +2 de poder se você estiver perdendo em dois cenários."},
-{id:"tutu",name:"Tutu Marambá",image:"assets/cartas/tutameia.png",subtitle:"O vulto das histórias",emoji:"🐗",cost:3,attack:4,defense:4,color:"#85634c",ability:"Ao revelar: +2 de poder se houver três ou mais cartas neste cenário."},
-{id:"lobisomem",name:"Lobisomem",subtitle:"A fera da lua cheia",emoji:"🐺",image:"assets/cartas/lobisomem.png",cost:4,attack:6,defense:3,color:"#786b8f",ability:"Ao revelar: +2 de poder se houver outra carta rival aqui."},
-{id:"boto-tucuxi",name:"Boto Tucuxi",subtitle:"O guardião das águas",emoji:"🐬",image:"assets/cartas/boto-tucuxi.png",cost:2,attack:3,defense:3,color:"#528ca9",ability:"Recebe +2 de poder no Rio das Iaras."},
-{id:"capelobo",name:"Capelobo",subtitle:"O caçador das sombras",emoji:"🐾",image:"assets/cartas/capelobo.png",cost:4,attack:5,defense:4,color:"#8d6e54",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
-{id:"comadre-fulozinha",name:"Comadre Fulozinha",subtitle:"A protetora da mata",emoji:"🍃",image:"assets/cartas/comadre-fulozinha.png",cost:2,attack:2,defense:4,color:"#5f9b66",ability:"Recebe +2 de poder na Floresta Encantada."},
-{id:"ioty",name:"Ioty",subtitle:"O mistério ancestral",emoji:"🔮",image:"assets/cartas/ioty.png",cost:3,attack:4,defense:3,color:"#9275b9",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
-{id:"jurupari",name:"Jurupari",subtitle:"O espírito da noite",emoji:"🌘",image:"assets/cartas/jurupari.png",cost:4,attack:5,defense:4,color:"#685b88",ability:"Ao revelar: +2 de poder se houver rival neste território."}
+{id:"saci",name:"Saci-Pererê",image:"assets/cartas/saci.png",subtitle:"O redemoinho travesso",emoji:"🌪️",cost:1,attack:2,defense:2,color:"#a95f3c",ability:"Ao revelar: ganha +2 de poder se for a única carta sua aqui."},
+{id:"iara",name:"Iara",image:"assets/cartas/iara.png",subtitle:"A voz das águas",emoji:"🧜🏽‍♀️",cost:2,attack:2,defense:3,color:"#347f9b",ability:"Ao revelar: enfraquece em 2 o maior rival neste território."},
+{id:"curupira",name:"Curupira",image:"assets/cartas/curupira.png",subtitle:"Guardião da mata",emoji:"🌿",cost:2,attack:3,defense:2,color:"#628e4e",ability:"Recebe +3 de poder na Floresta Encantada."},
+{id:"cuca",name:"Cuca",image:"assets/cartas/cuca.png",subtitle:"Feitiço da noite",emoji:"🐊",cost:3,attack:4,defense:3,color:"#8d6ab0",ability:"Ao revelar: +2 de poder se houver rival neste território."},
+{id:"boitata",name:"Boitatá",image:"assets/cartas/boitata.png",subtitle:"A chama protetora",emoji:"🐍",cost:3,attack:4,defense:3,color:"#c68e38",ability:"Recebe +2 de poder na Vila Assombrada."},
+{id:"boto",name:"Boto-cor-de-rosa",image:"assets/cartas/boto.png",subtitle:"Mistério dos rios",emoji:"🐬",cost:1,attack:2,defense:1,color:"#b9668c",ability:"Recebe +3 de poder no Rio das Iaras."},
+{id:"mula",name:"Mula sem Cabeça",image:"assets/cartas/mula.png",subtitle:"Lenda em chamas",emoji:"🔥",cost:4,attack:5,defense:4,color:"#b84c3b",ability:"Ao revelar: +2 de poder se você estiver perdendo aqui."},
+{id:"vitoria",name:"Vitória-Régia",image:"assets/cartas/vitoria-regia.png",subtitle:"A beleza da lagoa",emoji:"🪷",cost:2,attack:1,defense:4,color:"#4c9a81",ability:"Ao revelar: compra uma carta se houver espaço na mão."},
+{id:"mapinguari",name:"Mapinguari",image:"assets/cartas/mapinguari.png",subtitle:"O gigante da mata",emoji:"🦣",cost:5,attack:6,defense:4,color:"#8b6d4d",ability:"Poder bruto para virar uma disputa."},
+{id:"corposeco",name:"Corpo-Seco",image:"assets/cartas/corpo-seco.png",subtitle:"A maldição errante",emoji:"👻",cost:3,attack:3,defense:3,color:"#89939d",ability:"Ao revelar: +2 de poder para cada carta rival aqui (máximo +4)."},
+{id:"maedagua",name:"Mãe-d'Água",image:"assets/cartas/mae-dagua.png",subtitle:"Senhora das fontes",emoji:"🫧",cost:4,attack:4,defense:4,color:"#4b9eb4",ability:"Ao revelar: +2 de poder se você controlar outro território."},
+{id:"negrinho",name:"Negrinho do Pastoreio",image:"assets/cartas/negrinho-do-pastoreio.png",subtitle:"O guia das trilhas",emoji:"✨",cost:2,attack:2,defense:2,color:"#c69b5d",ability:"Ao revelar: +1 de poder para cada carta sua aqui (máximo +3)."},
+{id:"boitata-guardiao",name:"Boiúna",image:"assets/cartas/boiuna.png",subtitle:"A serpente dos rios",emoji:"🐉",cost:4,attack:4,defense:4,color:"#417e9a",ability:"Ao revelar: +2 de poder no Rio das Iaras."},
+{id:"matinta",name:"Matinta-Pereira",image:"assets/cartas/matinta-pereira.png",subtitle:"O assobio da noite",emoji:"🦉",cost:2,attack:2,defense:2,color:"#7764a7",ability:"Ao revelar: recebe +2 se o rival já tiver duas cartas aqui."},
+{id:"caipora",name:"Caipora",image:"assets/cartas/caipora.png",subtitle:"Protetora dos animais",emoji:"🏹",cost:2,attack:2,defense:3,color:"#4e9a62",ability:"Recebe +2 de poder na Floresta Encantada."},
+{id:"caboclo",name:"Caboclo-d'Água",image:"assets/cartas/caboclo-dagua.png",subtitle:"O guardião do igarapé",emoji:"🛶",cost:3,attack:3,defense:4,color:"#438fa6",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
+{id:"mulaouro",name:"Mãe do Ouro",image:"assets/cartas/mula-ouro.png",subtitle:"Luz que protege tesouros",emoji:"🌟",cost:3,attack:3,defense:3,color:"#c49a39",ability:"Ao revelar: +2 de poder se você estiver vencendo aqui."},
+{id:"onca",name:"Onça da Mão Torta",image:"assets/cartas/onca-da-mao-torta.png",subtitle:"A fera encantada",emoji:"🐆",cost:4,attack:5,defense:3,color:"#bd783d",ability:"Ao revelar: +1 de poder por carta sua aqui (máximo +3)."},
+{id:"pisadeira",name:"Pisadeira",subtitle:"O terror da madrugada",emoji:"🌑",cost:3,attack:3,defense:3,color:"#8c526b",ability:"Ao revelar: reduz em 2 o poder de uma carta rival aqui."},
+{id:"sereia",name:"Sereia do Rio",image:"assets/cartas/sereia-do-rio.png",subtitle:"O canto profundo",emoji:"🧜‍♀️",cost:4,attack:4,defense:4,color:"#4d8fc2",ability:"Ao revelar: +2 de poder se o rival tiver mais poder aqui."},
+{id:"sao-saci",name:"Romãozinho",image:"assets/cartas/romaozinho.png",subtitle:"O menino travesso",emoji:"🧒",cost:1,attack:2,defense:1,color:"#b66b49",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
+{id:"estrela",name:"Estrela do Mar",image:"assets/cartas/estrela-do-mar.png",subtitle:"Encanto das águas",emoji:"⭐",cost:1,attack:1,defense:2,color:"#d28bba",ability:"Recebe +2 de poder no Rio das Iaras."},
+{id:"guardiao",name:"Anhangá",image:"assets/cartas/anhanga.png",subtitle:"O espírito protetor",emoji:"🦌",cost:5,attack:5,defense:4,color:"#d1d1a2",ability:"Ao revelar: +2 de poder se você estiver perdendo em dois cenários."},
+{id:"tutu",name:"Tutu Marambá",image:"assets/cartas/tutameia.png",subtitle:"O vulto das histórias",emoji:"🐗",cost:3,attack:3,defense:3,color:"#85634c",ability:"Ao revelar: +2 de poder se houver três ou mais cartas neste cenário."},
+{id:"lobisomem",name:"Lobisomem",subtitle:"A fera da lua cheia",emoji:"🐺",image:"assets/cartas/lobisomem.png",cost:4,attack:5,defense:3,color:"#786b8f",ability:"Ao revelar: +2 de poder se houver outra carta rival aqui."},
+{id:"boto-tucuxi",name:"Boto Tucuxi",subtitle:"O guardião das águas",emoji:"🐬",image:"assets/cartas/boto-tucuxi.png",cost:2,attack:2,defense:2,color:"#528ca9",ability:"Recebe +2 de poder no Rio das Iaras."},
+{id:"capelobo",name:"Capelobo",subtitle:"O caçador das sombras",emoji:"🐾",image:"assets/cartas/capelobo.png",cost:4,attack:4,defense:3,color:"#8d6e54",ability:"Ao revelar: +2 de poder se você tiver menos cartas aqui."},
+{id:"comadre-fulozinha",name:"Comadre Fulozinha",subtitle:"A protetora da mata",emoji:"🍃",image:"assets/cartas/comadre-fulozinha.png",cost:2,attack:2,defense:3,color:"#5f9b66",ability:"Recebe +2 de poder na Floresta Encantada."},
+{id:"ioty",name:"Ioty",subtitle:"O mistério ancestral",emoji:"🔮",image:"assets/cartas/ioty.png",cost:3,attack:3,defense:3,color:"#9275b9",ability:"Ao revelar: +1 de poder para cada outra carta sua aqui (máximo +2)."},
+{id:"jurupari",name:"Jurupari",subtitle:"O espírito da noite",emoji:"🌘",image:"assets/cartas/jurupari.png",cost:4,attack:4,defense:3,color:"#685b88",ability:"Ao revelar: +2 de poder se houver rival neste território."}
 ];
 const LOCATIONS = [
 {id:"forest",name:"Floresta Encantada",desc:"Curupira recebe +3 de poder aqui.",emoji:"🌲",color:"#75b879"},
@@ -49,7 +49,7 @@ function laneCards(lane,side,includePending=true){return [...state.played,...(in
 function scoreList(){return LOCATIONS.map(location=>({location,you:state.played.filter(p=>p.lane===location.id&&p.side==="you").reduce((n,p)=>n+powerFor(p),0),bot:state.played.filter(p=>p.lane===location.id&&p.side==="bot").reduce((n,p)=>n+powerFor(p),0)}));}
 function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2300);}
 function showScreen(name){$("home-screen").classList.toggle("hidden",name!=="home");$("collection-screen").classList.toggle("hidden",name!=="collection");$("game-screen").classList.toggle("hidden",name!=="game");window.scrollTo({top:0,behavior:"smooth"});}
-function cardArt(card){const image=card.image?'<img class="card-art-image" src="'+card.image+'" alt="'+card.name+'" loading="lazy" onload="this.parentElement.classList.add(\'has-card-image\')" onerror="this.remove();this.parentElement.classList.remove(\'has-card-image\')">':"";return image+'<span class="card-cost">'+card.cost+'</span><span class="card-emoji">'+card.emoji+'</span>';
+function cardArt(card){const image=card.image?'<img class="card-art-image" src="'+card.image+'" alt="'+card.name+'" loading="lazy" onload="this.parentElement.classList.add(\'has-card-image\')" onerror="this.remove();this.parentElement.classList.remove(\'has-card-image\')">':"";return image+'<span class="card-cost">'+card.cost+'</span><span class="card-emoji">'+card.emoji+'</span>';}
 function cardMarkup(card,classes=""){return `<button type="button" class="hand-card ${classes}" style="--card:${card.color}" data-card="${card.instanceId}" aria-label="Selecionar ${card.name}"><span class="hand-card-art">${cardArt(card)}</span><span class="hand-card-info"><strong class="card-title">${card.name}</strong><span class="card-subtitle">${card.subtitle}</span><span class="card-ability">${card.ability}</span><span class="card-statline"><span>⚔ ${card.attack} ATQ</span><span>⬡ ${card.defense} DEF</span></span></span></button>`;}
 function renderCollection(){$("collection-grid").innerHTML=CARDS.map(c=>`<article class="collection-card" style="--card:${c.color}"><div class="hand-card-art">${cardArt(c)}</div><div class="hand-card-info"><h4>${c.name}</h4><div class="card-subtitle">${c.subtitle}</div><div class="card-ability">${c.ability}</div><div class="card-statline"><span>⚔ ${c.attack} ATQ</span><span>⬡ ${c.defense} DEF</span><span>✦ ${c.cost} EN.</span></div></div></article>`).join("");}
 function renderGame(){
@@ -108,12 +108,29 @@ function resolvePending(){
   const lane=p.lane,side=p.side,enemy=side==="you"?"bot":"you";
   const ownBefore=state.played.filter(x=>x.lane===lane&&x.side===side);
   const enemyBefore=state.played.filter(x=>x.lane===lane&&x.side===enemy);
+  const scoreNow=currentScoresIncludingPending().find(x=>x.id===lane)||{you:0,bot:0};
   if(p.card.id==="saci"&&ownBefore.length===0)p.bonus+=2;
   if(p.card.id==="cuca"&&enemyBefore.length>0)p.bonus+=2;
-  if(p.card.id==="mula"){const scores=currentScoresIncludingPending().find(s=>s.id===lane);if((side==="you"?scores.you<scores.bot:scores.bot<scores.you))p.bonus+=2;}
+  if(p.card.id==="mula"&&(side==="you"?scoreNow.you<scoreNow.bot:scoreNow.bot<scoreNow.you))p.bonus+=2;
   if(p.card.id==="corposeco")p.bonus+=Math.min(4,enemyBefore.length*2);
   if(p.card.id==="maedagua"){const controlled=LOCATIONS.some(l=>l.id!==lane&&state.played.filter(x=>x.lane===l.id&&x.side===side).reduce((n,x)=>n+powerFor(x),0)>state.played.filter(x=>x.lane===l.id&&x.side===enemy).reduce((n,x)=>n+powerFor(x),0));if(controlled)p.bonus+=2;}
-  if(p.card.id==="negrinho")p.bonus+=Math.min(3,ownBefore.length);
+  if(p.card.id==="negrinho")p.bonus+=Math.min(2,ownBefore.length);
+  if(p.card.id==="matinta"&&enemyBefore.length>=2)p.bonus+=2;
+  if((p.card.id==="caipora"||p.card.id==="comadre-fulozinha")&&lane==="forest")p.bonus+=2;
+  if((p.card.id==="boto-tucuxi"||p.card.id==="estrela")&&lane==="river")p.bonus+=2;
+  if(p.card.id==="boitata-guardiao"&&lane==="river")p.bonus+=2;
+  if(p.card.id==="caboclo"&&ownBefore.length<enemyBefore.length)p.bonus+=2;
+  if(p.card.id==="onca")p.bonus+=Math.min(3,ownBefore.length);
+  if(p.card.id==="sao-saci")p.bonus+=Math.min(2,ownBefore.length);
+  if(p.card.id==="sereia"&&(side==="you"?scoreNow.you<scoreNow.bot:scoreNow.bot<scoreNow.you))p.bonus+=2;
+  if(p.card.id==="mulaouro"&&(side==="you"?scoreNow.you>scoreNow.bot:scoreNow.bot>scoreNow.you))p.bonus+=2;
+  if(p.card.id==="guardiao"){const losing=currentScoresIncludingPending().filter(x=>side==="you"?x.you<x.bot:x.bot<x.you).length;if(losing>=2)p.bonus+=2;}
+  if(p.card.id==="tutu"&&state.played.filter(x=>x.lane===lane).length+1>=3)p.bonus+=2;
+  if(p.card.id==="lobisomem"&&enemyBefore.length>0)p.bonus+=2;
+  if(p.card.id==="capelobo"&&ownBefore.length<enemyBefore.length)p.bonus+=2;
+  if(p.card.id==="ioty")p.bonus+=Math.min(2,ownBefore.length);
+  if(p.card.id==="jurupari"&&enemyBefore.length>0)p.bonus+=2;
+  if(p.card.id==="pisadeira"){const target=enemyBefore.slice().sort((a,b)=>powerFor(b)-powerFor(a))[0];if(target)target.bonus-=2;}
   p.revealed=true;state.played.push(p);
   if(p.card.id==="iara"){
    const target=[...state.played].filter(x=>x.lane===lane&&x.side===enemy).sort((a,b)=>powerFor(b)-powerFor(a))[0];
