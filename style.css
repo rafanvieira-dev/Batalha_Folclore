@@ -747,3 +747,47 @@ body:has(#game-screen:not(.hidden)) #locations .location .board-card .card-full-
 body:has(#game-screen:not(.hidden)) #locations .location .scenario-center{grid-column:1!important;grid-row:2!important;position:relative!important;inset:auto!important;transform:none!important;width:100%!important;height:68px!important;min-height:68px!important;max-height:68px!important;align-self:stretch!important;margin:0!important;padding:0 2px 20px!important}
 body:has(#game-screen:not(.hidden)) #locations .location .empty-slot{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:28px!important;height:28px!important}
 @media(max-width:560px){body:has(#game-screen:not(.hidden)) #locations .location{min-height:clamp(250px,36vh,310px)!important;grid-template-rows:minmax(0,1fr) 60px minmax(0,1fr)!important;padding:5px 4px!important;gap:4px!important}body:has(#game-screen:not(.hidden)) #locations .location .lane-card-row{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:3px!important}body:has(#game-screen:not(.hidden)) #locations .location .board-card{max-height:74px!important}body:has(#game-screen:not(.hidden)) #locations .location .scenario-center{height:60px!important;min-height:60px!important;max-height:60px!important;padding-bottom:18px!important}}
+
+
+/* Coleção: arte completa em proporção correta e legenda fora da área da imagem */
+#collection-screen .collection-grid{
+ display:grid!important;
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ align-items:start!important;
+ gap:20px!important;
+}
+#collection-screen .collection-card{
+ display:flex!important;flex-direction:column!important;align-self:start!important;
+ width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:auto!important;
+ padding:0!important;overflow:hidden!important;border:1px solid #665477!important;
+ border-radius:12px!important;background:linear-gradient(180deg,#1b2030,#111722)!important;
+ text-align:left!important;transform:none;box-shadow:0 8px 22px #0005!important;
+}
+#collection-screen .collection-card:hover,#collection-screen .collection-card:focus-visible{
+ transform:translateY(-4px)!important;border-color:#f1c66e!important;
+ box-shadow:0 14px 30px #0008,0 0 0 1px #f1c66e22!important;
+}
+#collection-screen .collection-card .card-full-image{
+ display:block!important;position:relative!important;inset:auto!important;
+ width:100%!important;height:auto!important;aspect-ratio:2/3!important;
+ min-height:0!important;object-fit:contain!important;object-position:center!important;
+ background:#0c101a!important;flex:none!important;
+}
+#collection-screen .collection-card-caption{
+ display:flex!important;flex-direction:column!important;gap:5px!important;
+ flex:1 0 auto!important;min-height:61px!important;padding:10px 12px!important;
+ background:linear-gradient(180deg,#1d2634,#111822)!important;
+ border-top:1px solid #ffffff12!important;
+}
+#collection-screen .collection-card-caption strong{
+ display:block!important;font:800 18px/1.15 'Barlow Condensed',sans-serif!important;
+ color:#f5f0e7!important;overflow-wrap:anywhere!important;
+}
+#collection-screen .collection-card-caption small{
+ display:block!important;font-size:11px!important;line-height:1.4!important;
+ color:#c1cce0!important;white-space:normal!important;
+}
+@media(min-width:1200px){#collection-screen .collection-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:22px!important}}
+@media(max-width:1050px){#collection-screen .collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:15px!important}}
+@media(max-width:700px){#collection-screen .collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}#collection-screen .collection-card-caption{padding:9px!important;min-height:58px!important}#collection-screen .collection-card-caption strong{font-size:17px!important}#collection-screen .collection-card-caption small{font-size:10px!important}}
+@media(max-width:360px){#collection-screen .collection-grid{gap:8px!important}#collection-screen .collection-card-caption{padding:7px!important}#collection-screen .collection-card-caption strong{font-size:15px!important}}
